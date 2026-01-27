@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AIRA-LAN | Servidor WoW 3.3.5</title>
+
+  <meta name="description" content="AIRA-LAN - Servidor local de World of Warcraft 3.3.5 para jugar con amigos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- Background FX -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="header" id="top">
+    <nav class="nav container">
+      <a class="brand" href="#top" aria-label="AIRA-LAN">
+        <span class="brand-mark">AIRA</span>
+        <span class="brand-sub">LAN</span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#home">Home</a>
+        <a href="#juegos">Juegos</a>
+        <a href="#conexion">Conexión</a>
+        <a href="#nosotros">Sobre nosotros</a>
+        <a class="cta" href="#cuentas">Crear cuenta</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <main id="home" class="hero">
+    <div class="container hero-grid">
+      <div class="hero-left">
+        <div class="badge">
+          <span class="dot"></span>
+          Servidor local • WoW 3.3.5 • AIRA-LAN
+        </div>
+
+        <h1>
+          Bienvenidos a <span class="accent">AIRA-LAN</span>
+        </h1>
+
+        <p class="lead">
+          Una LAN entre amigos. Un servidor para viciar sin drama. Hoy empezamos con <b>World of Warcraft 3.3.5</b>
+          y mañana… lo que pinte 🔥
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="#cuentas">Crear cuenta (próximamente)</a>
+          <a class="btn ghost" href="#conexion">Cómo conectarse</a>
+        </div>
+
+        <div class="quick-stats">
+          <div class="stat">
+            <div class="stat-num" id="statOnline">—</div>
+            <div class="stat-label">Players online</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">3.3.5</div>
+            <div class="stat-label">Versión WoW</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">LAN</div>
+            <div class="stat-label">Modo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Estado del servidor</span>
+            <span class="pill" id="serverStatus">Desconocido</span>
+          </div>
+
+          <div class="panel-body">
+            <div class="kv">
+              <div class="k">Nombre</div>
+              <div class="v">AIRA-LAN</div>
+            </div>
+            <div class="kv">
+              <div class="k">Juego</div>
+              <div class="v">World of Warcraft (WotLK)</div>
+            </div>
+            <div class="kv">
+              <div class="k">Versión</div>
+              <div class="v">3.3.5a</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <p class="small">
+              Más adelante esto se va a conectar al server para mostrar estado real.
+              Por ahora es una maqueta con estilo.
+            </p>
+
+            <a class="btn small primary" href="#juegos">Ver juegos disponibles</a>
+          </div>
+        </div>
+
+        <div class="floating-card">
+          <div class="floating-title">AIRA</div>
+          <div class="floating-sub">Friends • LAN • Chill & Grind</div>
+          <div class="floating-bar"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Juegos -->
+  <section id="juegos" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Juegos disponibles</h2>
+        <p>Esta sección queda lista para que después conectes el “estado” (online/offline, players, etc.).</p>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <div class="card-top">
+            <div class="icon">⚔️</div>
+            <div>
+              <h3>World of Warcraft</h3>
+              <div class="meta">WotLK • 3.3.5a</div>
+            </div>
+            <span class="tag" data-status="up">LAN</span>
+          </div>
+          <p>
+            Realm AIRA-LAN. Ideal para raids casual, leveling con amigos y caos organizado.
+          </p>
+          <div class="card-actions">
+            <a class="btn small ghost" href="#conexion">Cómo entrar</a>
+            <button class="btn small primary" type="button" disabled title="Próximamente">
+              Crear cuenta
+            </button>
+          </div>
+        </article>
+
+        <article class="card muted">
+          <div class="card-top">
+            <div class="icon">🎮</div>
+            <div>
+              <h3>Próximamente</h3>
+              <div class="meta">Más juegos para la LAN</div>
+            </div>
+            <span class="tag" data-status="soon">Soon</span>
+          </div>
+          <p>
+            Este espacio lo dejamos armado para que sumen otros servers/juegos más adelante.
+          </p>
+          <div class="card-actions">
+            <button class="btn small ghost" type="button" disabled>Ver</button>
+            <button class="btn small ghost" type="button" disabled>Estado</button>
+          </div>
+        </article>
+
+        <article class="card muted">
+          <div class="card-top">
+            <div class="icon">🛠️</div>
+            <div>
+              <h3>Integración</h3>
+              <div class="meta">API / SQL / Login</div>
+            </div>
+            <span class="tag" data-status="todo">To-do</span>
+          </div>
+          <p>
+            Cuando quieras, armamos la parte de “crear cuenta” conectando a un backend (no desde GitHub Pages).
+          </p>
+          <div class="card-actions">
+            <a class="btn small primary" href="#cuentas">Ir a crear cuenta</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conexión -->
+  <section id="conexion" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Conexión</h2>
+        <p>Todo lo necesario para sumarte a la party.</p>
+      </div>
+
+      <div class="split">
+        <div class="box">
+          <h3>Discord</h3>
+          <p>
+            Entrá al Discord para coordinar horarios, instalar archivos y resolver dudas.
+          </p>
+          <a class="btn primary" href="https://discord.gg/TU-INVITE" target="_blank" rel="noreferrer">
+            Unirme al Discord
+          </a>
+          <p class="small hint">Reemplazá <b>TU-INVITE</b> por tu link real.</p>
+        </div>
+
+        <div class="box">
+          <h3>Datos (placeholder)</h3>
+          <div class="kv">
+            <div class="k">Realmlist</div>
+            <div class="v mono">set realmlist aira-lan.local</div>
+          </div>
+          <div class="kv">
+            <div class="k">Parche</div>
+            <div class="v">WotLK 3.3.5a</div>
+          </div>
+          <div class="kv">
+            <div class="k">Notas</div>
+            <div class="v">Más adelante lo hacemos editable o dinámico.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Crear cuenta -->
+  <section id="cuentas" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Crear cuenta</h2>
+        <p>
+          GitHub Pages no permite ejecutar SQL directo. Pero dejamos el front listo para conectar a un backend
+          (por ejemplo: Cloudflare Workers, Render, Railway, etc.).
+        </p>
+      </div>
+
+      <div class="box">
+        <form class="form" onsubmit="return false;">
+          <div class="form-row">
+            <label>
+              Usuario
+              <input type="text" placeholder="ej: Damian" disabled />
+            </label>
+            <label>
+              Password
+              <input type="password" placeholder="••••••••" disabled />
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              Confirmar password
+              <input type="password" placeholder="••••••••" disabled />
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn primary" type="button" disabled>
+              Crear cuenta (próximamente)
+            </button>
+            <span class="small hint">
+              Cuando quieras, armamos el backend para crear cuentas de verdad.
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nosotros -->
+  <section id="nosotros" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Sobre nosotros</h2>
+        <p>AIRA es un grupo de amigos con una idea simple: armar una LAN y pasarla bien.</p>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <h3>Qué es AIRA</h3>
+          <p>
+            Un grupo chico, con ganas de jugar y de construir algo copado. Sin humo: solo juego, mates y risas.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Filosofía</h3>
+          <p>
+            No pay-to-win. No dramas. Si te sumás, venís a divertirte y a respetar.
+          </p>
+        </article>
+        <article class="card">
+          <h3>La LAN</h3>
+          <p>
+            AIRA-LAN es el nombre del server y del espacio donde vamos sumando servicios y juegos.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand mini">
+          <span class="brand-mark">AIRA</span><span class="brand-sub">LAN</span>
+        </div>
+        <p class="small">
+          Servidor local para jugar con amigos. Hecho con ❤️ y un poco de caos.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#juegos">Juegos</a>
+        <a href="#conexion">Conexión</a>
+        <a href="#nosotros">Nosotros</a>
+      </div>
+
+      <div class="footer-right small">
+        <div>© <span id="year"></span> AIRA-LAN</div>
+        <div class="mono">v0.1 frontpage</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
