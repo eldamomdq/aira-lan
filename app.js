@@ -1,6 +1,6 @@
 const year = document.getElementById("year");
 year.textContent = new Date().getFullYear();
-
+const API_BASE = "https://api.airalan.com";
 const navToggle = document.getElementById("navToggle");
 const navLinks = document.getElementById("navLinks");
 
