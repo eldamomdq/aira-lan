@@ -237,23 +237,38 @@
       </div>
 
       <div class="box">
-        <form class="form" onsubmit="return false;">
-          <div class="form-row">
-            <label>
-              Usuario
-              <input type="text" placeholder="ej: Damian" disabled />
-            </label>
-            <label>
-              Password
-              <input type="password" placeholder="••••••••" disabled />
-            </label>
-          </div>
-          <div class="form-row">
-            <label>
-              Confirmar password
-              <input type="password" placeholder="••••••••" disabled />
-            </label>
-          </div>
+        <form class="form" id="registerForm">
+  <div class="form-row">
+    <label>
+      Usuario
+      <input name="username" type="text" placeholder="ej: Damian" required minlength="3" maxlength="32" />
+    </label>
+    <label>
+      Password
+      <input name="password" type="password" placeholder="••••••••" required minlength="6" maxlength="64" />
+    </label>
+  </div>
+
+  <div class="form-row">
+    <label>
+      Confirmar password
+      <input name="confirmPassword" type="password" placeholder="••••••••" required minlength="6" maxlength="64" />
+    </label>
+    <label>
+      Email (opcional)
+      <input name="email" type="email" placeholder="mail@ejemplo.com" />
+    </label>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn primary" type="submit" id="registerBtn">
+      Crear cuenta
+    </button>
+    <span class="small hint" id="registerMsg">
+      Completá el formulario y creamos tu cuenta en el server.
+    </span>
+  </div>
+</form>
 
           <div class="form-actions">
             <button class="btn primary" type="button" disabled>
