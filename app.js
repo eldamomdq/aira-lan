@@ -1,11 +1,11 @@
-// ====== Config ======
-const API_BASE = "https://api.airalan.com";
-
-// ====== Año footer ======
+// Año footer
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
 
-// ====== Navbar mobile ======
+// ✅ API real (UNA sola vez)
+const API_BASE = "https://api.airalan.com";
+
+// Navbar mobile
 const navToggle = document.getElementById("navToggle");
 const navLinks = document.getElementById("navLinks");
 
@@ -21,91 +21,96 @@ document.querySelectorAll(".nav-links a").forEach((a) => {
   });
 });
 
-// ====== Mock UI server status (dejalo o borralo después) ======
+// Estado del servidor (REAL)
 const serverStatus = document.getElementById("serverStatus");
 const statOnline = document.getElementById("statOnline");
 
-if (serverStatus && statOnline) {
-  const fakeOnline = Math.floor(Math.random() * 12); // 0..11
-  statOnline.textContent = String(fakeOnline);
+async function refreshStatus() {
+  try {
+    const res = await fetch(`${API_BASE}/health`, { cache: "no-store" });
+    if (!res.ok) throw new Error("health not ok");
+    const data = await res.json();
 
-  serverStatus.textContent = fakeOnline > 0 ? "Online (mock)" : "Idle (mock)";
-  serverStatus.style.borderColor = "rgba(255,122,24,.35)";
-  serverStatus.style.background = "rgba(255,122,24,.08)";
-  serverStatus.style.color = "rgba(255,255,255,.86)";
+    if (data?.ok) {
+      if (serverStatus) {
+        serverStatus.textContent = "Online";
+        serverStatus.style.borderColor = "rgba(255,122,24,.35)";
+        serverStatus.style.background = "rgba(255,122,24,.08)";
+        serverStatus.style.color = "rgba(255,255,255,.86)";
+      }
+      if (statOnline) statOnline.textContent = "—"; // si después armás endpoint real de players, lo conectamos acá
+    } else {
+      throw new Error("health ok:false");
+    }
+  } catch (e) {
+    if (serverStatus) {
+      serverStatus.textContent = "Offline";
+      serverStatus.style.borderColor = "rgba(255,255,255,.14)";
+      serverStatus.style.background = "rgba(255,255,255,.03)";
+      serverStatus.style.color = "rgba(233,238,246,.72)";
+    }
+    if (statOnline) statOnline.textContent = "0";
+  }
 }
+refreshStatus();
+setInterval(refreshStatus, 15000);
 
-// ====== Register form ======
+// Form registro
 const form = document.getElementById("registerForm");
-const msg = document.getElementById("formMsg");     // <- del HTML que te pasé
-const btn = document.getElementById("submitBtn");   // <- del HTML que te pasé
+const btn = document.getElementById("registerBtn");
+const msg = document.getElementById("registerMsg");
 
-function setMsg(text, type = "info") {
+function setMsg(text, ok = true) {
   if (!msg) return;
   msg.textContent = text;
-  msg.dataset.type = type; // success | error | info
-}
-
-function setLoading(isLoading) {
-  if (!btn) return;
-  btn.disabled = isLoading;
-  btn.textContent = isLoading ? "Creando..." : "Crear cuenta";
+  msg.style.opacity = "1";
+  msg.style.color = ok ? "#9ae6b4" : "#feb2b2";
 }
 
 if (form) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    setMsg("");
 
-    const username = (document.getElementById("username")?.value || "").trim();
-    const password = document.getElementById("password")?.value || "";
-    const confirmPassword = document.getElementById("confirmPassword")?.value || "";
-    const email = (document.getElementById("email")?.value || "").trim();
+    const payload = {
+      username: form.username.value.trim(),
+      password: form.password.value,
+      confirmPassword: form.confirmPassword.value,
+      email: form.email.value.trim(),
+    };
 
-    // Validaciones rápidas (match backend)
-    if (!/^[a-zA-Z0-9_]{3,32}$/.test(username)) {
-      return setMsg("Usuario inválido. Usá 3-32 caracteres: letras, números o _", "error");
-    }
-    if (password.length < 6 || password.length > 64) {
-      return setMsg("Password inválida. Usá entre 6 y 64 caracteres.", "error");
-    }
-    if (password !== confirmPassword) {
-      return setMsg("Las passwords no coinciden.", "error");
-    }
-
-    setLoading(true);
-    setMsg("Creando cuenta...", "info");
+    btn.disabled = true;
+    setMsg("Creando cuenta...", true);
 
     try {
       const res = await fetch(`${API_BASE}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, confirmPassword, email }),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json().catch(() => ({}));
 
-      if (res.ok && data.ok) {
-        setMsg("✅ Cuenta creada. Ya podés loguearte.", "success");
-        form.reset();
+      if (!res.ok) {
+        const code = data?.error || "UNKNOWN";
+        const friendly =
+          ({
+            USERNAME_TAKEN: "Ese usuario ya existe. Probá otro.",
+            USERNAME_INVALID: "Usuario inválido (solo letras/números/_ y 3–32 caracteres).",
+            PASSWORD_INVALID: "Password inválida (mínimo 6 caracteres).",
+            PASSWORD_MISMATCH: "Las contraseñas no coinciden.",
+            SERVER_ERROR: "Error del servidor. Probá de nuevo en unos segundos.",
+          })[code] || data?.details || "Error desconocido.";
+
+        setMsg(friendly, false);
         return;
       }
 
-      const code = data?.error || "UNKNOWN";
-      const friendly = ({
-        USERNAME_TAKEN: "Ese usuario ya existe. Probá otro.",
-        USERNAME_INVALID: "Usuario inválido (solo letras/números/_ y 3–32).",
-        PASSWORD_INVALID: "Password inválida (6–64).",
-        PASSWORD_MISMATCH: "Las contraseñas no coinciden.",
-        DB_ERROR: "Error de base de datos. Avisale al admin.",
-        SERVER_ERROR: "Error del servidor. Probá de nuevo en unos segundos.",
-      })[code] || (data?.details || "Error desconocido.");
-
-      setMsg(`❌ ${friendly}`, "error");
+      setMsg("Cuenta creada ✅ Ya podés loguearte.", true);
+      form.reset();
     } catch (err) {
-      setMsg(`❌ No pude conectar con la API. (${err?.message || err})`, "error");
+      setMsg("No pude conectar con el servidor. Revisá tu conexión.", false);
     } finally {
-      setLoading(false);
+      btn.disabled = false;
     }
   });
 }
