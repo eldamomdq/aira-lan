@@ -1,3 +1,5 @@
+console.log("app.js cargó OK ✅");
+
 // Año footer
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
