@@ -155,61 +155,69 @@
     </div>
   </section>
 
-  <!-- Descargas -->
-  <section id="descargas" class="section">
-    <div class="container">
-      <div class="section-head">
-        <h2>Descargas</h2>
-        <p>Acá dejamos links para bajar el cliente y lo necesario para entrar. (Podés subirlo a Google Drive y pegar el link.)</p>
+<!-- Descargas -->
+<section id="descargas" class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Descargas</h2>
+      <p>Descargá el cliente de World of Warcraft (Pandaria 5.0.x) y seguí los pasos para conectarte al servidor.</p>
+    </div>
+
+    <div class="split">
+      <div class="box">
+        <h3>⚔️ Cliente WoW Pandaria (5.0.x)</h3>
+        <p>
+          Descargá el cliente completo desde el siguiente enlace de Google Drive.
+        </p>
+
+        <div class="card-actions">
+          <a class="btn primary"
+             href="https://drive.google.com/uc?export=download&id=1_sIn2YxgAxjClvlOGhF4WGJZQHlvS79a"
+             target="_blank"
+             rel="noreferrer">
+            Descargar cliente
+          </a>
+        </div>
+
+        <p class="small hint">
+          Si Google Drive no te deja descargar directamente, hacé clic en "Descargar" arriba a la derecha.
+        </p>
       </div>
 
-      <div class="split">
-        <div class="box">
-          <h3>Cliente WoW (Pandaria 5.0.x)</h3>
-          <p>
-            Bajá el cliente desde tu link. Si es un ZIP/RAR grande, recomendamos Google Drive o Mega.
-          </p>
+      <div class="box">
+        <h3>🛠 Configuración del Realmlist</h3>
 
-          <!-- Reemplazá estos href por tus links reales -->
-          <div class="card-actions">
-            <a class="btn primary" href="https://drive.google.com/" target="_blank" rel="noreferrer">
-              Descargar cliente (Drive)
-            </a>
-            <a class="btn ghost" href="https://drive.google.com/" target="_blank" rel="noreferrer">
-              Mirror (opcional)
-            </a>
-          </div>
+        <p class="small">
+          Una vez descargado el cliente:
+        </p>
 
-          <p class="small hint">
-            Tip: si usás Drive, ponelo como “Cualquiera con el enlace puede ver/descargar”.
-          </p>
+        <ol class="small" style="line-height:1.7; padding-left:18px;">
+          <li>Entrá a la carpeta del juego.</li>
+          <li>Andá a: <b>WTF/Config.wtf</b></li>
+          <li>Buscá esta línea:</li>
+        </ol>
+
+        <div class="kv">
+          <div class="k">Actual</div>
+          <div class="v mono">SET realmlist "127.0.0.1"</div>
         </div>
 
-        <div class="box">
-          <h3>Archivos extra</h3>
-          <div class="kv">
-            <div class="k">Realmlist</div>
-            <div class="v mono">set realmlist aira-lan.local</div>
-          </div>
-          <div class="kv">
-            <div class="k">Notas</div>
-            <div class="v">Si necesitás un launcher, patch o fix, dejalo linkeado acá.</div>
-          </div>
+        <p class="small">Y cambiala por:</p>
 
-          <!-- Opcional -->
-          <div class="divider"></div>
-          <div class="card-actions">
-            <a class="btn small ghost" href="https://drive.google.com/" target="_blank" rel="noreferrer">
-              Patch / Fix (opcional)
-            </a>
-            <a class="btn small ghost" href="https://drive.google.com/" target="_blank" rel="noreferrer">
-              Addons (opcional)
-            </a>
-          </div>
+        <div class="kv">
+          <div class="k">Nuevo</div>
+          <div class="v mono">SET realmlist "aira.hopto.org"</div>
         </div>
+
+        <div class="divider"></div>
+
+        <p class="small hint">
+          Guardá el archivo, cerralo y ejecutá el WoW normalmente.
+        </p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- Conexión -->
   <section id="conexion" class="section">
