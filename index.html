@@ -4,24 +4,24 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>AIRA-LAN | WoW (Pandaria)</title>
-
   <meta name="description" content="AIRA-LAN - Servidor LAN entre amigos. World of Warcraft (Pandaria) + descargas + guía de conexión." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <!-- Background FX -->
+
   <div class="bg-grid" aria-hidden="true"></div>
   <div class="bg-glow" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
 
   <!-- Header -->
   <header class="header" id="top">
     <nav class="nav container">
       <a class="brand" href="#top" aria-label="AIRA-LAN">
         <span class="brand-mark">AIRA</span>
+        <span class="brand-sep">/</span>
         <span class="brand-sub">LAN</span>
       </a>
 
@@ -31,10 +31,11 @@
 
       <div class="nav-links" id="navLinks">
         <a href="#home">Home</a>
+        <a href="#proxima">Próxima LAN</a>
+        <a href="#jugadores">Jugadores</a>
         <a href="#juegos">Juegos</a>
         <a href="#descargas">Descargas</a>
-        <a href="#conexion">Conexión</a>
-        <a href="#nosotros">Nosotros</a>
+        <a href="#historial">Historial</a>
         <a class="cta" href="#cuentas">Crear cuenta</a>
       </div>
     </nav>
@@ -46,20 +47,37 @@
       <div class="hero-left">
         <div class="badge">
           <span class="dot"></span>
-          Servidor LAN • WoW Pandaria • AIRA-LAN
+          LAN PARTY · MAR DEL PLATA · EST. 2025
         </div>
 
         <h1>
-          Bienvenidos a <span class="accent">AIRA-LAN</span>
+          Bienvenidos a<br/><span class="accent">AIRA-LAN</span>
         </h1>
 
         <p class="lead">
-          Una LAN entre amigos, sin drama. Hoy el servidor principal es <b>World of Warcraft: Pandaria</b>
-          (aprox <b>5.0.x</b>). Entrás, jugás, te cagás de risa. Listo 😄
+          Una LAN entre amigos, sin drama. CS2, COD4 y WoW Pandaria.
+          Entrás, jugás, te cagás de risa. Listo&nbsp;😄
         </p>
 
+        <!-- Countdown discreto -->
+        <div class="countdown-bar">
+          <div class="countdown-label">
+            <span class="dot pulse"></span>
+            PRÓXIMA LAN — SÁB 28 FEB · 18:00HS
+          </div>
+          <div class="countdown-timer">
+            <div class="cd-unit"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">días</span></div>
+            <span class="cd-sep">:</span>
+            <div class="cd-unit"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">hrs</span></div>
+            <span class="cd-sep">:</span>
+            <div class="cd-unit"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">min</span></div>
+            <span class="cd-sep">:</span>
+            <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">seg</span></div>
+          </div>
+        </div>
+
         <div class="hero-actions">
-          <a class="btn primary" href="#cuentas">Crear cuenta</a>
+          <a class="btn primary" href="#cuentas">Crear cuenta WoW</a>
           <a class="btn ghost" href="#conexion">Cómo conectarse</a>
           <a class="btn ghost" href="#descargas">Descargar cliente</a>
         </div>
@@ -70,12 +88,12 @@
             <div class="stat-label">Players online</div>
           </div>
           <div class="stat">
-            <div class="stat-num">5.0.x</div>
-            <div class="stat-label">Versión WoW</div>
+            <div class="stat-num">12</div>
+            <div class="stat-label">Confirmados</div>
           </div>
           <div class="stat">
-            <div class="stat-num">LAN</div>
-            <div class="stat-label">Modo</div>
+            <div class="stat-num">5.0.x</div>
+            <div class="stat-label">WoW build</div>
           </div>
         </div>
       </div>
@@ -86,7 +104,6 @@
             <span class="panel-title">Estado del servidor</span>
             <span class="pill" id="serverStatus">Desconocido</span>
           </div>
-
           <div class="panel-body">
             <div class="kv">
               <div class="k">Nombre</div>
@@ -104,50 +121,244 @@
               <div class="k">Versión</div>
               <div class="v">5.0.x</div>
             </div>
-
+            <div class="kv">
+              <div class="k">Realmlist</div>
+              <div class="v mono">aira.hopto.org</div>
+            </div>
             <div class="divider"></div>
-
-            <p class="small">
-              Estado visual (por ahora). Más adelante lo conectamos para que muestre players reales.
-            </p>
-
             <a class="btn small primary" href="#juegos">Ver juegos</a>
           </div>
         </div>
 
         <div class="floating-card">
           <div class="floating-title">AIRA</div>
-          <div class="floating-sub">Friends • LAN • Chill & Grind</div>
+          <div class="floating-sub">Friends · LAN · Chill &amp; Grind</div>
           <div class="floating-bar"></div>
         </div>
       </div>
     </div>
   </main>
 
+  <!-- Próxima LAN -->
+  <section id="proxima" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">PRÓXIMO EVENTO</div>
+        <h2>LAN Party <span class="accent">#01</span></h2>
+        <p>Sábado 28 de febrero · 18:00 a 04:00hs · Ubicación: <span class="secret" title="¿De verdad creés que te vamos a decir?">[ CLASIFICADO ]</span></p>
+      </div>
+
+      <div class="event-grid">
+        <div class="event-main box">
+          <div class="event-games">
+            <div class="event-game">
+              <div class="game-icon">🎯</div>
+              <div>
+                <div class="game-name">Counter-Strike 2</div>
+                <div class="game-meta">Juego principal de la noche</div>
+              </div>
+            </div>
+            <div class="event-game">
+              <div class="game-icon">💥</div>
+              <div>
+                <div class="game-name">Call of Duty 4: MW</div>
+                <div class="game-meta">El clásico, para la nostalgia</div>
+              </div>
+            </div>
+            <div class="event-game">
+              <div class="game-icon">⚔️</div>
+              <div>
+                <div class="game-name">WoW Pandaria</div>
+                <div class="game-meta">Para quien quiera levearse un rato</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-side">
+          <div class="box">
+            <div class="event-count-big">
+              <span class="count-num">12</span>
+              <span class="count-label">jugadores<br/>confirmados</span>
+            </div>
+            <div class="divider"></div>
+            <p class="small hint">Primera LAN oficial con registro. Empieza el historial.</p>
+            <a class="btn small primary" href="#jugadores">Ver el roster</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Jugadores -->
+  <section id="jugadores" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">EL ROSTER</div>
+        <h2>Los <span class="accent">12</span> confirmados</h2>
+        <p>Cada uno con su historia, su reputación, y sus pecados.</p>
+      </div>
+
+      <div class="roster-grid">
+
+        <div class="player-card">
+          <div class="player-avatar" data-initials="TY"><span>TY</span></div>
+          <div class="player-info">
+            <div class="player-nick">Toyo</div>
+            <div class="player-tag">AWPer (autoproclamado)</div>
+            <div class="player-lore">Se hace el AWPer pero le falta muñeca. La confianza sí la tiene.</div>
+          </div>
+        </div>
+
+        <div class="player-card featured">
+          <div class="player-avatar" data-initials="DA"><span>DA</span></div>
+          <div class="player-info">
+            <div class="player-nick">Damo <span class="founder-badge">FUNDADOR</span></div>
+            <div class="player-tag">El arquitecto</div>
+            <div class="player-lore">Su mejor gloria es haber creado esto. Lo demás, en proceso.</div>
+          </div>
+        </div>
+
+        <div class="player-card">
+          <div class="player-avatar" data-initials="SI"><span>SI</span></div>
+          <div class="player-info">
+            <div class="player-nick">Simo</div>
+            <div class="player-tag">Fortnitero retirado</div>
+            <div class="player-lore">Fortnitero viejo y peludo. Reconversión en proceso.</div>
+          </div>
+        </div>
+
+        <div class="player-card">
+          <div class="player-avatar" data-initials="CH"><span>CH</span></div>
+          <div class="player-info">
+            <div class="player-nick">Chispita</div>
+            <div class="player-tag">Provocador élite</div>
+            <div class="player-lore">Provocador como pocos. El mejor de los nuestros. Paradoja viviente.</div>
+          </div>
+        </div>
+
+        <div class="player-card">
+          <div class="player-avatar" data-initials="MC"><span>MC</span></div>
+          <div class="player-info">
+            <div class="player-nick">McLanee</div>
+            <div class="player-tag">Viejo sabio</div>
+            <div class="player-lore">Espera paciente. Se aprovecha cuando ya están todos en pedo.</div>
+          </div>
+        </div>
+
+        <div class="player-card">
+          <div class="player-avatar" data-initials="GR"><span>GR</span></div>
+          <div class="player-info">
+            <div class="player-nick">Groot</div>
+            <div class="player-tag">Soporte técnico</div>
+            <div class="player-lore">RESTARTEAAAAA. Su diagnóstico y su solución siempre son lo mismo.</div>
+          </div>
+        </div>
+
+        <div class="player-card">
+          <div class="player-avatar" data-initials="KF"><span>KF</span></div>
+          <div class="player-info">
+            <div class="player-nick">KungFu</div>
+            <div class="player-tag">Gran guitarrista</div>
+            <div class="player-lore">Como player, gran guitarrista. Las prioridades están claras.</div>
+          </div>
+        </div>
+
+        <div class="player-card">
+          <div class="player-avatar" data-initials="RO"><span>RO</span></div>
+          <div class="player-info">
+            <div class="player-nick">Rope</div>
+            <div class="player-tag">Lobista de AOE2</div>
+            <div class="player-lore">No ve la hora de hacer una LAN de AOE2. Cada LAN intenta convencer a todos.</div>
+          </div>
+        </div>
+
+        <div class="player-card">
+          <div class="player-avatar" data-initials="JD"><span>JD</span></div>
+          <div class="player-info">
+            <div class="player-nick">JDD</div>
+            <div class="player-tag">Destilado puro</div>
+            <div class="player-lore">Tiene prohibida la mezcla de bebidas con Whisky. Lo aprendimos a las malas.</div>
+          </div>
+        </div>
+
+        <div class="player-card">
+          <div class="player-avatar" data-initials="SD"><span>SD</span></div>
+          <div class="player-info">
+            <div class="player-nick">ShEePDoG</div>
+            <div class="player-tag">Tilteador profesional</div>
+            <div class="player-lore">Tilteador de primera. Remoto o en persona, la distancia no lo frena.</div>
+          </div>
+        </div>
+
+        <div class="player-card">
+          <div class="player-avatar" data-initials="EM"><span>EM</span></div>
+          <div class="player-info">
+            <div class="player-nick">Emma</div>
+            <div class="player-tag">Gato gordo sigiloso</div>
+            <div class="player-lore">La última vez vino callado y nos llenó de plomo. No subestimes al gato.</div>
+          </div>
+        </div>
+
+        <div class="player-card rookie">
+          <div class="player-avatar" data-initials="MB"><span>MB</span></div>
+          <div class="player-info">
+            <div class="player-nick">Moby <span class="rookie-badge">ROOKIE</span></div>
+            <div class="player-tag">Primera vez</div>
+            <div class="player-lore">Primera vez. Solo se esperan grandes cosas de él. Sin presión, Fran.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- Juegos -->
   <section id="juegos" class="section">
     <div class="container">
       <div class="section-head">
+        <div class="section-tag">ARSENAL</div>
         <h2>Juegos disponibles</h2>
-        <p>Por ahora el servidor principal es WoW Pandaria. La idea es sumar más con el tiempo.</p>
+        <p>El lineup de esta LAN. La idea es sumar más con el tiempo.</p>
       </div>
 
       <div class="cards">
         <article class="card">
           <div class="card-top">
+            <div class="icon">🎯</div>
+            <div>
+              <h3>Counter-Strike 2</h3>
+              <div class="meta">FPS · Juego principal</div>
+            </div>
+            <span class="tag" data-status="up">ACTIVO</span>
+          </div>
+          <p>El clásico de clásicos. Rifles, AWPs y mucho tilt garantizado.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <div class="icon">💥</div>
+            <div>
+              <h3>CoD4: Modern Warfare</h3>
+              <div class="meta">FPS · Nostalgia mode</div>
+            </div>
+            <span class="tag" data-status="up">ACTIVO</span>
+          </div>
+          <p>Para recordar los viejos tiempos. Shipment 24/7 obligatorio.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
             <div class="icon">⚔️</div>
             <div>
               <h3>World of Warcraft</h3>
-              <div class="meta">Mists of Pandaria • 5.0.x</div>
+              <div class="meta">Mists of Pandaria · 5.0.x</div>
             </div>
             <span class="tag" data-status="up">LAN</span>
           </div>
-          <p>
-            Realm AIRA-LAN. Para levelear tranqui, dungeons, PvP y raids con amigos.
-          </p>
+          <p>Realm AIRA-LAN. Para levelear tranqui entre partidas de CS.</p>
           <div class="card-actions">
             <a class="btn small ghost" href="#conexion">Cómo entrar</a>
-            <a class="btn small ghost" href="#descargas">Descargas</a>
             <a class="btn small primary" href="#cuentas">Crear cuenta</a>
           </div>
         </article>
@@ -155,74 +366,53 @@
     </div>
   </section>
 
-<!-- Descargas -->
-<section id="descargas" class="section">
-  <div class="container">
-    <div class="section-head">
-      <h2>Descargas</h2>
-      <p>Descargá el cliente de World of Warcraft (Pandaria 5.0.x) y seguí los pasos para conectarte al servidor.</p>
-    </div>
-
-    <div class="split">
-      <div class="box">
-        <h3>⚔️ Cliente WoW Pandaria (5.0.x)</h3>
-        <p>
-          Descargá el cliente completo desde el siguiente enlace de Google Drive.
-        </p>
-
-        <div class="card-actions">
-          <a class="btn primary"
-             href="https://drive.google.com/uc?export=download&id=1_sIn2YxgAxjClvlOGhF4WGJZQHlvS79a"
-             target="_blank"
-             rel="noreferrer">
-            Descargar cliente
-          </a>
-        </div>
-
-        <p class="small hint">
-          Si Google Drive no te deja descargar directamente, hacé clic en "Descargar" arriba a la derecha.
-        </p>
+  <!-- Descargas -->
+  <section id="descargas" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">DOWNLOADS</div>
+        <h2>Descargas</h2>
+        <p>Descargá el cliente de WoW (Pandaria 5.0.x) y seguí los pasos para conectarte.</p>
       </div>
 
-      <div class="box">
-        <h3>🛠 Configuración del Realmlist</h3>
-
-        <p class="small">
-          Una vez descargado el cliente:
-        </p>
-
-        <ol class="small" style="line-height:1.7; padding-left:18px;">
-          <li>Entrá a la carpeta del juego.</li>
-          <li>Andá a: <b>WTF/Config.wtf</b></li>
-          <li>Buscá esta línea:</li>
-        </ol>
-
-        <div class="kv">
-          <div class="k">Actual</div>
-          <div class="v mono">SET realmlist "127.0.0.1"</div>
+      <div class="split">
+        <div class="box">
+          <h3>⚔️ Cliente WoW Pandaria (5.0.x)</h3>
+          <p>Descargá el cliente completo desde Google Drive.</p>
+          <div class="card-actions">
+            <a class="btn primary"
+               href="https://drive.google.com/uc?export=download&id=1_sIn2YxgAxjClvlOGhF4WGJZQHlvS79a"
+               target="_blank" rel="noreferrer">
+              Descargar cliente
+            </a>
+          </div>
+          <p class="small hint">Si Google Drive no te deja descargar, hacé clic en "Descargar" arriba a la derecha.</p>
         </div>
 
-        <p class="small">Y cambiala por:</p>
-
-        <div class="kv">
-          <div class="k">Nuevo</div>
-          <div class="v mono">SET realmlist "aira.hopto.org"</div>
+        <div class="box">
+          <h3>🛠 Configuración del Realmlist</h3>
+          <p class="small">Una vez descargado el cliente:</p>
+          <ol class="small steps-list">
+            <li>Entrá a la carpeta del juego.</li>
+            <li>Andá a: <b>WTF/Config.wtf</b></li>
+            <li>Buscá y reemplazá la línea del realmlist:</li>
+          </ol>
+          <div class="kv">
+            <div class="k">Nuevo valor</div>
+            <div class="v mono">SET realmlist "aira.hopto.org"</div>
+          </div>
+          <div class="divider"></div>
+          <p class="small hint">Guardá, cerrá y ejecutá el WoW normalmente.</p>
         </div>
-
-        <div class="divider"></div>
-
-        <p class="small hint">
-          Guardá el archivo, cerralo y ejecutá el WoW normalmente.
-        </p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <!-- Conexión -->
   <section id="conexion" class="section">
     <div class="container">
       <div class="section-head">
+        <div class="section-tag">SETUP</div>
         <h2>Conexión</h2>
         <p>Pasos simples para entrar al reino.</p>
       </div>
@@ -230,9 +420,7 @@
       <div class="split">
         <div class="box">
           <h3>Discord</h3>
-          <p>
-            Entrá al Discord para coordinar horarios, pedir el cliente, y resolver dudas.
-          </p>
+          <p>Para coordinar horarios, pedir el cliente, y resolver dudas.</p>
           <a class="btn primary" href="https://discord.gg/JadzHT9pF5" target="_blank" rel="noreferrer">
             Unirme al Discord
           </a>
@@ -243,16 +431,14 @@
           <h3>Cómo entrar</h3>
           <p class="small">
             1) Instalá / descomprimí el cliente<br />
-            2) Configurá el realmlist<br />
+            2) Configurá el realmlist a <span class="mono">aira.hopto.org</span><br />
             3) Creá tu cuenta acá abajo<br />
             4) Logueate y listo ⚔️
           </p>
-
           <div class="divider"></div>
-
           <div class="kv">
             <div class="k">Realmlist</div>
-            <div class="v mono">set realmlist aira-lan.local</div>
+            <div class="v mono">aira.hopto.org</div>
           </div>
           <div class="kv">
             <div class="k">Expansión</div>
@@ -264,77 +450,102 @@
   </section>
 
   <!-- Crear cuenta -->
-<section id="cuentas" class="section">
-  <div class="container">
-    <div class="section-head">
-      <h2>Crear cuenta</h2>
-      <p>Completá el formulario y te creamos la cuenta en el server.</p>
-    </div>
-
-    <div class="box">
-      <form class="form" id="registerForm">
-        <div class="form-row">
-          <label>
-            Usuario
-            <input name="username" type="text" placeholder="ej: Damo" required minlength="3" maxlength="32" />
-          </label>
-          <label>
-            Password
-            <input name="password" type="password" placeholder="••••••••" required minlength="6" maxlength="64" />
-          </label>
-        </div>
-
-        <div class="form-row">
-          <label>
-            Confirmar password
-            <input name="confirmPassword" type="password" placeholder="••••••••" required minlength="6" maxlength="64" />
-          </label>
-          <label>
-            Email (opcional)
-            <input name="email" type="email" placeholder="mail@ejemplo.com" />
-          </label>
-        </div>
-
-        <div class="form-actions">
-          <button class="btn primary" type="submit" id="registerBtn">Crear cuenta</button>
-          <span class="small hint" id="registerMsg">Completá el formulario y creamos tu cuenta en el server.</span>
-        </div>
-      </form>
-    </div>
-  </div>
-</section>
-
-  <!-- Nosotros -->
-  <section id="nosotros" class="section">
+  <section id="cuentas" class="section">
     <div class="container">
       <div class="section-head">
-        <h2>Sobre nosotros</h2>
-        <p>Quiénes somos y por qué existe AIRA-LAN.</p>
+        <div class="section-tag">REGISTRO</div>
+        <h2>Crear cuenta</h2>
+        <p>Completá el formulario y te creamos la cuenta en el server.</p>
       </div>
 
-      <div class="cards">
-        <article class="card">
-          <h3>Somos de Mar del</h3>
-          <p>
-            Somos un grupo de amigos de Mar del Plata. Nos encantan las LANs, la nostalgia, y armar quilombo (del bueno)
-            en dungeons y raids.
-          </p>
-        </article>
+      <div class="box">
+        <form class="form" id="registerForm">
+          <div class="form-row">
+            <label>
+              Usuario
+              <input name="username" type="text" placeholder="ej: Damo" required minlength="3" maxlength="32" />
+            </label>
+            <label>
+              Password
+              <input name="password" type="password" placeholder="••••••••" required minlength="6" maxlength="64" />
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              Confirmar password
+              <input name="confirmPassword" type="password" placeholder="••••••••" required minlength="6" maxlength="64" />
+            </label>
+            <label>
+              Email (opcional)
+              <input name="email" type="email" placeholder="mail@ejemplo.com" />
+            </label>
+          </div>
+          <div class="form-actions">
+            <button class="btn primary" type="submit" id="registerBtn">Crear cuenta</button>
+            <span class="small hint" id="registerMsg">Completá el formulario y creamos tu cuenta en el server.</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
 
-        <article class="card">
-          <h3>Nuestros servers</h3>
-          <p>
-            Tenemos nuestros propios servers para jugar tranqui: sin pay-to-win, sin drama, y con la mejor onda.
-            Si te sumás, venís a divertirte y respetar.
-          </p>
-        </article>
+  <!-- Historial -->
+  <section id="historial" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">ARCHIVO</div>
+        <h2>Historial de LANs</h2>
+        <p>Donde queda escrita la historia. Para bien o para mal.</p>
+      </div>
 
-        <article class="card">
-          <h3>La regla de oro</h3>
-          <p>
-            Buena onda primero. Si pinta tryhard, se avisa. Si pinta chill, mate y risas también.
-          </p>
-        </article>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="tl-marker">
+            <div class="tl-dot pulse"></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-content box">
+            <div class="tl-header">
+              <span class="tl-num">#01</span>
+              <div>
+                <div class="tl-title">LAN Party Inaugural</div>
+                <div class="tl-date">28 Feb 2025 · 18:00 — 04:00hs</div>
+              </div>
+              <span class="tag" data-status="up">EN CURSO</span>
+            </div>
+            <div class="tl-games">
+              <span class="tl-game">🎯 CS2</span>
+              <span class="tl-game">💥 CoD4 MW</span>
+              <span class="tl-game">⚔️ WoW Pandaria</span>
+            </div>
+            <div class="tl-players">12 jugadores · Primera con registro oficial</div>
+            <div class="tl-log">
+              <div class="log-line">
+                <span class="log-prompt">$</span>
+                <span>Primera LAN con registro histórico. Moby debuta. Se esperan grandes cosas.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-marker">
+            <div class="tl-dot dim"></div>
+          </div>
+          <div class="tl-content box dim-box">
+            <div class="tl-header">
+              <span class="tl-num tl-num-dim">#02</span>
+              <div>
+                <div class="tl-title">Próximamente...</div>
+                <div class="tl-date">TBD</div>
+              </div>
+              <span class="tag">PENDIENTE</span>
+            </div>
+            <div class="tl-players muted-text">¿AOE2 finalmente? Solo Rope lo sabe.</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -344,24 +555,26 @@
     <div class="container footer-grid">
       <div>
         <div class="brand mini">
-          <span class="brand-mark">AIRA</span><span class="brand-sub">LAN</span>
+          <span class="brand-mark">AIRA</span>
+          <span class="brand-sep">/</span>
+          <span class="brand-sub">LAN</span>
         </div>
         <p class="small">
-          Servidor LAN para jugar con amigos. Hecho con ❤️, mate y un poco de caos.
+          Servidor LAN para jugar con amigos.<br>Hecho con ❤️, mate y un poco de caos.
         </p>
       </div>
 
       <div class="footer-links">
         <a href="#home">Home</a>
-        <a href="#juegos">Juegos</a>
+        <a href="#proxima">Próxima LAN</a>
+        <a href="#jugadores">Jugadores</a>
+        <a href="#historial">Historial</a>
         <a href="#descargas">Descargas</a>
-        <a href="#conexion">Conexión</a>
-        <a href="#nosotros">Nosotros</a>
       </div>
 
       <div class="footer-right small">
         <div>© <span id="year"></span> AIRA-LAN</div>
-        <div class="mono">v1.0</div>
+        <div class="mono">v2.0</div>
       </div>
     </div>
   </footer>
