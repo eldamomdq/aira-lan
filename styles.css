@@ -271,3 +271,77 @@ h1{ margin:16px 0 10px; font-family:'Rajdhani',system-ui; font-weight:700; lette
   .countdown-bar{ flex-direction:column; align-items:flex-start; gap:10px; }
 }
 @media(max-width:480px){ .roster-grid{ grid-template-columns:1fr; } }
+
+/* Split 3 columnas */
+.split-3{ grid-template-columns:1fr 1fr 1fr; }
+@media(max-width:920px){ .split-3{ grid-template-columns:1fr; } }
+
+/* Scoreboard */
+.scoreboard-wrap{
+  padding:0;
+  overflow:hidden;
+}
+.scoreboard{
+  width:100%;
+  border-collapse:collapse;
+  font-family:'Barlow',sans-serif;
+}
+.scoreboard thead tr{
+  background:rgba(255,122,24,.06);
+  border-bottom:1px solid rgba(255,122,24,.2);
+}
+.scoreboard th{
+  padding:14px 16px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  letter-spacing:1.5px;
+  color:var(--orange);
+  font-weight:400;
+  text-transform:uppercase;
+  text-align:left;
+}
+.scoreboard td{
+  padding:13px 16px;
+  font-size:14px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  color:rgba(233,238,246,.8);
+}
+.scoreboard tbody tr:last-child td{ border-bottom:none; }
+.scoreboard tbody tr:hover td{ background:rgba(255,255,255,.025); }
+
+.col-rank{ width:48px; }
+.rank-num{
+  font-family:'Share Tech Mono',monospace;
+  font-size:13px;
+  color:var(--muted);
+}
+.player-name{
+  font-family:'Rajdhani',system-ui;
+  font-size:16px;
+  font-weight:600;
+  letter-spacing:.3px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.score-val{
+  font-family:'Share Tech Mono',monospace;
+  color:var(--muted);
+}
+.col-pts,.col-part,.col-total{ text-align:center; }
+.total-val{
+  font-family:'Rajdhani',system-ui;
+  font-size:17px;
+  font-weight:700;
+  color:var(--orange2);
+}
+.row-rookie td{ background:rgba(100,200,255,.025); }
+
+.scoreboard-footer{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:12px 16px;
+  border-top:1px solid var(--line);
+  background:rgba(0,0,0,.15);
+}
