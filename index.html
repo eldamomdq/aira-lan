@@ -25,6 +25,7 @@
         <span class="brand-sep">/</span>
         <span class="brand-sub">LAN</span>
       </a>
+      <a href="#juego">Juego</a>
 
       <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -719,6 +720,36 @@
 
   </div>
 </section>
+
+<section id="juego" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">MINI-GAME</div>
+      <h2>Mini-CS <span class="accent">2D</span></h2>
+      <p>WASD para moverte, mouse para apuntar, click para disparar. Plant/defuse con E.</p>
+    </div>
+
+    <div class="box">
+      <p class="small hint">Podés jugar offline o conectarte por LAN con WebSocket.</p>
+      <div class="card-actions">
+        <button class="btn primary" id="openGame">Jugar ahora</button>
+        <a class="btn ghost" href="./game/" target="_blank" rel="noreferrer">Abrir en nueva pestaña</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal del juego -->
+<div class="game-modal" id="gameModal" aria-hidden="true">
+  <div class="game-modal-backdrop" id="closeGame"></div>
+  <div class="game-modal-card" role="dialog" aria-modal="true">
+    <div class="game-modal-top">
+      <div class="mono">AIRA-LAN · Mini-CS 2D</div>
+      <button class="btn small ghost" id="closeGameBtn">Cerrar</button>
+    </div>
+    <iframe class="game-frame" id="gameFrame" src="" title="AIRA Mini-CS 2D"></iframe>
+  </div>
+</div>
 
   <!-- Footer -->
   <footer class="footer">

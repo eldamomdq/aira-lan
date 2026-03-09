@@ -448,3 +448,38 @@ h1{ margin:16px 0 10px; font-family:'Rajdhani',system-ui; font-weight:700; lette
   border-top:1px solid var(--line);
   background:rgba(0,0,0,.15);
 }
+
+/* Game modal */
+.game-modal{
+  position:fixed; inset:0; display:none; z-index:999;
+}
+.game-modal.open{ display:block; }
+.game-modal-backdrop{
+  position:absolute; inset:0;
+  background:rgba(0,0,0,.65);
+  backdrop-filter: blur(6px);
+}
+.game-modal-card{
+  position:relative;
+  width:min(1100px, 94vw);
+  height:min(720px, 86vh);
+  margin:6vh auto 0;
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  background:rgba(10,14,18,.92);
+  box-shadow: var(--shadow);
+}
+.game-modal-top{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 12px;
+  border-bottom:1px solid var(--line);
+  background:rgba(0,0,0,.25);
+}
+.game-frame{
+  width:100%;
+  height:calc(100% - 48px);
+  border:0;
+  display:block;
+  background:#000;
+}
