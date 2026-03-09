@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AIRA-LAN | Mini-CS 2D</title>
+  <style>
+    :root{
+      --bg:#07090c;
+      --panel:#0b0f14;
+      --text:#e9eef6;
+      --muted:#9aa7b7;
+      --line:rgba(255,255,255,.10);
+      --orange:#ff7a18;
+      --orange2:#ff9b3d;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; background:radial-gradient(900px 600px at 30% 10%, rgba(255,122,24,.12), transparent 60%), var(--bg);
+      color:var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      overflow:hidden;
+    }
+    canvas{display:block; width:100vw; height:100vh;}
+    .hud{
+      position:fixed; left:16px; top:16px; z-index:5;
+      background:rgba(0,0,0,.35); border:1px solid var(--line);
+      padding:12px 12px; border-radius:14px; backdrop-filter: blur(8px);
+      min-width: 260px;
+    }
+    .row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin:6px 0;}
+    .title{font-weight:800; letter-spacing:.5px}
+    .muted{color:rgba(233,238,246,.65); font-size:12px}
+    .pill{
+      font-size:12px; padding:4px 8px; border-radius:999px;
+      border:1px solid rgba(255,122,24,.35); color:var(--orange2);
+      background:rgba(255,122,24,.10);
+    }
+    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12px; color:rgba(233,238,246,.75)}
+    .right{
+      position:fixed; right:16px; top:16px; z-index:5;
+      background:rgba(0,0,0,.35); border:1px solid var(--line);
+      padding:12px 12px; border-radius:14px; backdrop-filter: blur(8px);
+      min-width: 240px;
+    }
+    .score-list{margin:8px 0 0; padding:0; list-style:none; font-size:12px; color:rgba(233,238,246,.75)}
+    .score-list li{display:flex; justify-content:space-between; gap:10px; padding:4px 0; border-bottom:1px solid rgba(255,255,255,.06)}
+    .score-list li:last-child{border-bottom:none}
+    .btn{
+      cursor:pointer; border:1px solid rgba(255,122,24,.35);
+      background:rgba(255,122,24,.10); color:var(--orange2);
+      padding:8px 10px; border-radius:10px; font-weight:700;
+    }
+    .btn:active{transform:translateY(1px)}
+    .small{font-size:11px}
+  </style>
+</head>
+<body>
+  <div class="hud">
+    <div class="row">
+      <div class="title">AIRA-LAN · Mini-CS 2D</div>
+      <span class="pill" id="status">LIVE</span>
+    </div>
+    <div class="row">
+      <div class="muted">Jugador</div>
+      <div id="playerName" class="kbd"></div>
+    </div>
+    <div class="row">
+      <div class="muted">HP</div>
+      <div id="hp" class="kbd"></div>
+    </div>
+    <div class="row">
+      <div class="muted">Ammo</div>
+      <div id="ammo" class="kbd"></div>
+    </div>
+    <div class="row">
+      <div class="muted">Controles</div>
+      <div class="kbd">WASD · Mouse aim · Click shoot · R recargar</div>
+    </div>
+    <div class="row">
+      <button class="btn" id="restart">Restart</button>
+      <div class="muted small">TIP: probá strafe + flick 😄</div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="row">
+      <div class="title">Score</div>
+      <div class="muted small">dummies</div>
+    </div>
+    <ul class="score-list" id="scoreList"></ul>
+  </div>
+
+  <canvas id="c"></canvas>
+
+<script>
+(() => {
+  // --- Config ---
+  const NAMES = [
+    "Chispita","Emma.bf","Moby","GRO0T","KungFu","toyito",
+    "Damo","Rope","ShEePoG","McLane","Ulicezbot","Simo"
+  ];
+
+  const canvas = document.getElementById("c");
+  const ctx = canvas.getContext("2d", { alpha: false });
+
+  const ui = {
+    playerName: document.getElementById("playerName"),
+    hp: document.getElementById("hp"),
+    ammo: document.getElementById("ammo"),
+    scoreList: document.getElementById("scoreList"),
+    restart: document.getElementById("restart"),
+  };
+
+  function resize(){
+    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    canvas.width = Math.floor(innerWidth * dpr);
+    canvas.height = Math.floor(innerHeight * dpr);
+    canvas.style.width = innerWidth + "px";
+    canvas.style.height = innerHeight + "px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  addEventListener("resize", resize);
+  resize();
+
+  // --- Input ---
+  const keys = new Set();
+  addEventListener("keydown", e => keys.add(e.key.toLowerCase()));
+  addEventListener("keyup", e => keys.delete(e.key.toLowerCase()));
+
+  const mouse = { x: innerWidth/2, y: innerHeight/2, down:false };
+  addEventListener("mousemove", e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  addEventListener("mousedown", e => { mouse.down = true; });
+  addEventListener("mouseup", e => { mouse.down = false; });
+
+  // --- World ---
+  const world = {
+    w: 2200,
+    h: 1400,
+    walls: [
+      // simple “map” (rectangles)
+      {x:300,y:240,w:520,h:60},
+      {x:1050,y:180,w:60,h:420},
+      {x:1400,y:320,w:420,h:60},
+      {x:620,y:720,w:60,h:420},
+      {x:1100,y:840,w:520,h:60},
+      {x:1700,y:620,w:60,h:420},
+      {x:260,y:980,w:420,h:60},
+    ]
+  };
+
+  function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+
+  function circleRectCollide(cx,cy,r, rect){
+    const nx = clamp(cx, rect.x, rect.x + rect.w);
+    const ny = clamp(cy, rect.y, rect.y + rect.h);
+    const dx = cx - nx, dy = cy - ny;
+    return (dx*dx + dy*dy) <= r*r;
+  }
+
+  // --- Entities ---
+  function rand(min,max){ return Math.random()*(max-min)+min; }
+
+  const player = {
+    name: "Damo",
+    x: world.w/2, y: world.h/2,
+    r: 18,
+    hp: 100,
+    speed: 260, // px/s
+    // weapon
+    magSize: 12,
+    ammo: 12,
+    reserve: 48,
+    reloadTime: 0.9,
+    reloading: 0,
+    fireRate: 0.13,
+    cooldown: 0,
+    recoil: 0,
+    kills: 0
+  };
+
+  // pick a random AIRA name for fun
+  player.name = NAMES[Math.floor(Math.random()*NAMES.length)];
+  ui.playerName.textContent = player.name;
+
+  const bots = [];
+  const botScore = new Map();
+
+  function spawnBot(name){
+    bots.push({
+      name,
+      x: rand(120, world.w-120),
+      y: rand(120, world.h-120),
+      r: 18,
+      hp: 100,
+      alive: true,
+      respawn: 0
+    });
+    botScore.set(name, 0);
+  }
+
+  // spawn dummies (not the player)
+  NAMES.filter(n => n !== player.name).slice(0, 8).forEach(spawnBot);
+
+  const bullets = [];
+
+  function shoot(){
+    if (player.reloading > 0) return;
+    if (player.cooldown > 0) return;
+    if (player.ammo <= 0) return;
+
+    player.cooldown = player.fireRate;
+    player.ammo -= 1;
+    player.recoil = Math.min(10, player.recoil + 1.2);
+
+    // angle to mouse in screen space -> convert using camera
+    const angle = Math.atan2((mouse.y - cam.y) - player.y, (mouse.x - cam.x) - player.x);
+
+    // slight spread based on recoil
+    const spread = (player.recoil * 0.002);
+    const a = angle + rand(-spread, spread);
+
+    const speed = 820;
+    bullets.push({
+      x: player.x + Math.cos(a)*(player.r+6),
+      y: player.y + Math.sin(a)*(player.r+6),
+      vx: Math.cos(a)*speed,
+      vy: Math.sin(a)*speed,
+      life: 1.25
+    });
+  }
+
+  function reload(){
+    if (player.reloading > 0) return;
+    if (player.ammo === player.magSize) return;
+    if (player.reserve <= 0) return;
+    player.reloading = player.reloadTime;
+  }
+
+  // --- Camera ---
+  const cam = { x:0, y:0 };
+  function updateCamera(){
+    cam.x = innerWidth/2 - player.x;
+    cam.y = innerHeight/2 - player.y;
+    // clamp so you can't see outside the world too much
+    cam.x = clamp(cam.x, innerWidth - world.w, 0);
+    cam.y = clamp(cam.y, innerHeight - world.h, 0);
+  }
+
+  // --- UI score ---
+  function renderScore(){
+    const entries = Array.from(botScore.entries()).sort((a,b)=>b[1]-a[1]).slice(0,10);
+    ui.scoreList.innerHTML = entries.map(([name,score]) => `
+      <li><span>${name}</span><span>${score}</span></li>
+    `).join("");
+  }
+
+  function reset(){
+    player.x = world.w/2; player.y = world.h/2;
+    player.hp = 100;
+    player.ammo = player.magSize;
+    player.reserve = 48;
+    player.reloading = 0;
+    player.cooldown = 0;
+    bullets.length = 0;
+    bots.forEach(b => { b.hp = 100; b.alive = true; b.respawn = 0; });
+    for (const k of botScore.keys()) botScore.set(k, 0);
+    renderScore();
+  }
+
+  ui.restart.addEventListener("click", reset);
+
+  // --- Game loop ---
+  let last = performance.now();
+  function loop(now){
+    const dt = Math.min(0.033, (now - last) / 1000);
+    last = now;
+
+    // logic
+    tick(dt);
+
+    // draw
+    draw();
+
+    requestAnimationFrame(loop);
+  }
+
+  function tick(dt){
+    // weapon timers
+    if (player.cooldown > 0) player.cooldown -= dt;
+    if (player.recoil > 0) player.recoil = Math.max(0, player.recoil - dt*6);
+
+    if (player.reloading > 0){
+      player.reloading -= dt;
+      if (player.reloading <= 0){
+        const need = player.magSize - player.ammo;
+        const take = Math.min(need, player.reserve);
+        player.ammo += take;
+        player.reserve -= take;
+        player.reloading = 0;
+      }
+    }
+
+    // input
+    if (keys.has("r")) reload();
+
+    const ax = (keys.has("d") ? 1 : 0) - (keys.has("a") ? 1 : 0);
+    const ay = (keys.has("s") ? 1 : 0) - (keys.has("w") ? 1 : 0);
+    let len = Math.hypot(ax, ay) || 1;
+    const vx = (ax/len) * player.speed;
+    const vy = (ay/len) * player.speed;
+
+    // move with simple collision
+    moveCircle(player, vx*dt, vy*dt);
+
+    // shooting
+    if (mouse.down) shoot();
+
+    // bullets
+    for (let i = bullets.length - 1; i >= 0; i--){
+      const b = bullets[i];
+      b.x += b.vx * dt;
+      b.y += b.vy * dt;
+      b.life -= dt;
+
+      // wall hit
+      let hitWall = false;
+      for (const w of world.walls){
+        if (b.x >= w.x && b.x <= w.x+w.w && b.y >= w.y && b.y <= w.y+w.h){
+          hitWall = true; break;
+        }
+      }
+
+      // bot hit
+      let hitBot = false;
+      if (!hitWall){
+        for (const bot of bots){
+          if (!bot.alive) continue;
+          const dx = bot.x - b.x, dy = bot.y - b.y;
+          if (dx*dx + dy*dy <= bot.r*bot.r){
+            bot.hp -= 34;
+            hitBot = true;
+            if (bot.hp <= 0){
+              bot.alive = false;
+              bot.respawn = 2.2;
+              player.kills++;
+              botScore.set(bot.name, (botScore.get(bot.name) || 0) + 1);
+              renderScore();
+            }
+            break;
+          }
+        }
+      }
+
+      if (b.life <= 0 || hitWall || hitBot) bullets.splice(i, 1);
+    }
+
+    // bot respawn
+    for (const bot of bots){
+      if (bot.alive) continue;
+      bot.respawn -= dt;
+      if (bot.respawn <= 0){
+        bot.alive = true;
+        bot.hp = 100;
+        bot.x = rand(120, world.w-120);
+        bot.y = rand(120, world.h-120);
+      }
+    }
+
+    // update camera + HUD
+    updateCamera();
+    ui.hp.textContent = `${player.hp} / 100`;
+    ui.ammo.textContent = `${player.ammo}/${player.reserve}` + (player.reloading>0 ? " (reloading…)" : "");
+  }
+
+  function moveCircle(ent, dx, dy){
+    // attempt X
+    ent.x += dx;
+    ent.x = clamp(ent.x, ent.r, world.w - ent.r);
+    for (const w of world.walls){
+      if (circleRectCollide(ent.x, ent.y, ent.r, w)){
+        ent.x -= dx; break;
+      }
+    }
+    // attempt Y
+    ent.y += dy;
+    ent.y = clamp(ent.y, ent.r, world.h - ent.r);
+    for (const w of world.walls){
+      if (circleRectCollide(ent.x, ent.y, ent.r, w)){
+        ent.y -= dy; break;
+      }
+    }
+  }
+
+  function draw(){
+    // background
+    ctx.fillStyle = "#07090c";
+    ctx.fillRect(0,0,innerWidth,innerHeight);
+
+    // world bg
+    ctx.save();
+    ctx.translate(cam.x, cam.y);
+
+    // floor grid
+    ctx.globalAlpha = 0.12;
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 1;
+    for (let x=0; x<=world.w; x+=80){
+      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,world.h); ctx.stroke();
+    }
+    for (let y=0; y<=world.h; y+=80){
+      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(world.w,y); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    // walls
+    for (const w of world.walls){
+      ctx.fillStyle = "rgba(255,255,255,.06)";
+      ctx.fillRect(w.x, w.y, w.w, w.h);
+      ctx.strokeStyle = "rgba(255,122,24,.25)";
+      ctx.strokeRect(w.x+0.5, w.y+0.5, w.w-1, w.h-1);
+    }
+
+    // bots
+    for (const bot of bots){
+      if (!bot.alive) continue;
+      drawAgent(bot, "rgba(170,190,210,.85)", "rgba(255,255,255,.15)");
+      drawName(bot.name, bot.x, bot.y - bot.r - 16, "rgba(233,238,246,.75)");
+      drawHP(bot);
+    }
+
+    // player
+    drawAgent(player, "rgba(255,155,61,.95)", "rgba(255,122,24,.18)");
+    drawName(player.name, player.x, player.y - player.r - 16, "rgba(255,200,140,.95)");
+
+    // aim line
+    const targetX = (mouse.x - cam.x);
+    const targetY = (mouse.y - cam.y);
+    ctx.strokeStyle = "rgba(255,122,24,.25)";
+    ctx.beginPath(); ctx.moveTo(player.x, player.y); ctx.lineTo(targetX, targetY); ctx.stroke();
+
+    // bullets
+    ctx.fillStyle = "rgba(255,155,61,.95)";
+    for (const b of bullets){
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, 3, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    ctx.restore();
+
+    // crosshair (screen-space)
+    ctx.strokeStyle = "rgba(255,155,61,.85)";
+    ctx.beginPath();
+    ctx.moveTo(mouse.x-10, mouse.y); ctx.lineTo(mouse.x-4, mouse.y);
+    ctx.moveTo(mouse.x+4, mouse.y); ctx.lineTo(mouse.x+10, mouse.y);
+    ctx.moveTo(mouse.x, mouse.y-10); ctx.lineTo(mouse.x, mouse.y-4);
+    ctx.moveTo(mouse.x, mouse.y+4); ctx.lineTo(mouse.x, mouse.y+10);
+    ctx.stroke();
+  }
+
+  function drawAgent(ent, fill, glow){
+    // glow
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(ent.x, ent.y, ent.r+10, 0, Math.PI*2); ctx.fill();
+
+    // body
+    ctx.fillStyle = fill;
+    ctx.beginPath(); ctx.arc(ent.x, ent.y, ent.r, 0, Math.PI*2); ctx.fill();
+
+    // facing dot
+    const tx = (mouse.x - cam.x);
+    const ty = (mouse.y - cam.y);
+    const a = Math.atan2(ty - ent.y, tx - ent.x);
+    ctx.fillStyle = "rgba(0,0,0,.35)";
+    ctx.beginPath();
+    ctx.arc(ent.x + Math.cos(a)*8, ent.y + Math.sin(a)*8, 4, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  function drawName(text, x, y, color){
+    ctx.font = "12px ui-monospace, SFMono-Regular, Menlo, monospace";
+    ctx.fillStyle = "rgba(0,0,0,.45)";
+    const w = ctx.measureText(text).width;
+    ctx.fillRect(x - w/2 - 6, y - 12, w + 12, 16);
+    ctx.fillStyle = color;
+    ctx.fillText(text, x - w/2, y);
+  }
+
+  function drawHP(ent){
+    const pct = clamp(ent.hp/100, 0, 1);
+    const w = 44, h = 6;
+    const x = ent.x - w/2, y = ent.y + ent.r + 10;
+    ctx.fillStyle = "rgba(0,0,0,.35)";
+    ctx.fillRect(x, y, w, h);
+    ctx.fillStyle = "rgba(255,122,24,.85)";
+    ctx.fillRect(x, y, w*pct, h);
+    ctx.strokeStyle = "rgba(255,255,255,.12)";
+    ctx.strokeRect(x+0.5, y+0.5, w-1, h-1);
+  }
+
+  renderScore();
+  reset();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
