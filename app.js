@@ -21,9 +21,9 @@ document.querySelectorAll(".nav-links a").forEach((a) => {
   });
 });
 
-// Countdown — Próxima LAN: Sábado 28 Feb 2026, 18:00hs Argentina (UTC-3)
+// Countdown — Próxima LAN: Sábado 30 May 2026, 18:00hs Argentina (UTC-3)
 function initCountdown() {
-  const target = new Date("2026-03-01T21:00:00Z"); // 28 Feb 18:00 ART = UTC-3 → UTC 21:00
+  const target = new Date("2026-05-30T21:00:00Z"); // 30 May 18:00 ART = UTC-3 → UTC 21:00
 
   function tick() {
     const now = new Date();

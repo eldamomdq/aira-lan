@@ -18,7 +18,7 @@
       position:fixed; left:16px; top:16px; z-index:5;
       background:rgba(0,0,0,.35); border:1px solid var(--line);
       padding:12px; border-radius:14px; backdrop-filter: blur(8px);
-      min-width: 320px;
+      min-width: 340px;
     }
     .row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin:6px 0;}
     .title{font-weight:900; letter-spacing:.5px}
@@ -27,6 +27,9 @@
     .pill{font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid rgba(255,122,24,.35); color:var(--orange2); background:rgba(255,122,24,.10);}
     .pill.ct{border-color:rgba(100,200,255,.35); color:var(--ct); background:rgba(100,200,255,.08);}
     .pill.t{border-color:rgba(255,155,61,.35); color:var(--t); background:rgba(255,155,61,.10);}
+    .score-t{color:var(--t); font-weight:800; font-family: ui-monospace, Menlo, monospace; font-size:14px;}
+    .score-ct{color:var(--ct); font-weight:800; font-family: ui-monospace, Menlo, monospace; font-size:14px;}
+    .score-sep{color:rgba(233,238,246,.3); margin:0 6px;}
     .right{
       position:fixed; right:16px; top:16px; z-index:5;
       background:rgba(0,0,0,.35); border:1px solid var(--line);
@@ -60,23 +63,50 @@
     }
     input:focus, select:focus{ border-color:rgba(255,122,24,.35); box-shadow:0 0 0 3px rgba(255,122,24,.12); }
     .hint{ font-size:12px; color:rgba(233,238,246,.55); line-height:1.5; margin-top:10px;}
+    /* Kill feed */
+    #killfeed{ margin-top:8px; }
+    .kf-entry{ font-size:11px; font-family: ui-monospace, Menlo, monospace; color:rgba(233,238,246,.7); line-height:1.8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .kf-killer{color:var(--orange2);}
+    .kf-victim{color:rgba(233,238,246,.5);}
   </style>
 </head>
 <body>
+  <!-- Left HUD -->
   <div class="hud">
     <div class="row">
       <div class="title">AIRA-LAN · Mini-CS 2D</div>
       <span class="pill" id="phasePill">FREEZE</span>
     </div>
-    <div class="row"><div class="muted">Jugador</div><div class="kbd" id="me"></div></div>
-    <div class="row"><div class="muted">Equipo</div><div class="kbd" id="team"></div></div>
-    <div class="row"><div class="muted">HP</div><div class="kbd" id="hp"></div></div>
-    <div class="row"><div class="muted">Ammo</div><div class="kbd" id="ammo"></div></div>
-    <div class="row"><div class="muted">Objetivo</div><div class="kbd" id="obj"></div></div>
-    <div class="row"><div class="muted">Controles</div><div class="kbd">WASD · Mouse aim · Click shoot · R recargar · E interact</div></div>
-    <div class="row"><button class="btn" id="restart">Restart</button><div class="muted" id="net">offline</div></div>
+    <div class="row">
+      <div class="muted">Jugador</div><div class="kbd" id="me"></div>
+    </div>
+    <div class="row">
+      <div class="muted">Equipo</div><div class="kbd" id="team"></div>
+    </div>
+    <div class="row">
+      <div class="muted">HP</div><div class="kbd" id="hp"></div>
+    </div>
+    <div class="row">
+      <div class="muted">Ammo</div><div class="kbd" id="ammo"></div>
+    </div>
+    <div class="row">
+      <div class="muted">Objetivo</div><div class="kbd" id="obj"></div>
+    </div>
+    <div class="row">
+      <div class="muted">Score</div>
+      <div><span class="score-t" id="scoreT">T: 0</span><span class="score-sep">·</span><span class="score-ct" id="scoreCT">CT: 0</span></div>
+    </div>
+    <div class="row">
+      <div class="muted">Controles</div>
+      <div class="kbd">WASD · Mouse aim · Click disparo · R recargar · E interact</div>
+    </div>
+    <div class="row">
+      <button class="btn" id="restart">Restart</button>
+      <div class="muted" id="net">offline</div>
+    </div>
   </div>
 
+  <!-- Right HUD -->
   <div class="right">
     <div class="row"><div class="title">Ronda</div><div class="kbd" id="round"></div></div>
     <div class="row"><div class="muted">Timer</div><div class="kbd" id="timer"></div></div>
@@ -85,11 +115,16 @@
       <button class="btn" id="swap">Cambiar Team</button>
       <button class="btn ct" id="resetScore">Reset Score</button>
     </div>
+    <div style="margin-top:8px; border-top:1px solid var(--line); padding-top:8px;">
+      <div class="muted" style="font-size:11px; margin-bottom:4px;">KILL FEED</div>
+      <div id="killfeed"></div>
+    </div>
     <div class="hint">
-      Multiplayer: agregá un server WS (opcional). En GitHub Pages, el juego va offline.
+      Multiplayer: iniciá el server WS (node server.js) y conectate por LAN.
     </div>
   </div>
 
+  <!-- Join overlay -->
   <div class="overlay" id="overlay">
     <div class="card">
       <div class="title" style="margin-bottom:10px;">Entrar a la partida</div>
@@ -109,12 +144,12 @@
       </div>
       <div class="row" style="margin-top:12px;">
         <button class="btn" id="play">Jugar</button>
-        <span class="kbd" style="opacity:.7;">Tip: si no ponés WS, es offline</span>
+        <span class="kbd" style="opacity:.7;">Sin WS = modo offline</span>
       </div>
       <div class="hint">
         Objetivo CS-lite:<br>
-        - <b>T</b>: plantá bomba en A o B (E).<br>
-        - <b>CT</b>: evitá el plant o defuse (E) si está plantada.
+        - <b>T</b>: plantá bomba en A o B (mantené E).<br>
+        - <b>CT</b>: evitá el plant o defusea (E) si está plantada.
       </div>
     </div>
   </div>
@@ -125,616 +160,749 @@
 (() => {
   const NAMES = ["Chispita","Emma.bf","T1n","GRO0T","KungFu","toyito","Damo","Rope","ShEePoG","McLane","Ulicezbot","Simo","Lucho","Roni","Empanada de polenta","PiguyiB","Julián Martinez"];
 
-  // Canvas
+  // ── Canvas ──────────────────────────────────────────────────────────────────
   const canvas = document.getElementById("c");
-  const ctx = canvas.getContext("2d", { alpha:false });
-  function resize(){
-    const dpr = Math.max(1, Math.min(2, devicePixelRatio||1));
-    canvas.width = Math.floor(innerWidth*dpr);
-    canvas.height = Math.floor(innerHeight*dpr);
-    canvas.style.width = innerWidth+"px";
-    canvas.style.height = innerHeight+"px";
-    ctx.setTransform(dpr,0,0,dpr,0,0);
+  const ctx = canvas.getContext("2d", { alpha: false });
+  function resize() {
+    const dpr = Math.max(1, Math.min(2, devicePixelRatio || 1));
+    canvas.width  = Math.floor(innerWidth  * dpr);
+    canvas.height = Math.floor(innerHeight * dpr);
+    canvas.style.width  = innerWidth  + "px";
+    canvas.style.height = innerHeight + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   addEventListener("resize", resize); resize();
 
-  // UI
+  // ── UI refs ─────────────────────────────────────────────────────────────────
   const ui = {
-    overlay: document.getElementById("overlay"),
-    nameSel: document.getElementById("nameSel"),
-    teamSel: document.getElementById("teamSel"),
-    wsUrl: document.getElementById("wsUrl"),
-    play: document.getElementById("play"),
-
-    me: document.getElementById("me"),
-    team: document.getElementById("team"),
-    hp: document.getElementById("hp"),
-    ammo: document.getElementById("ammo"),
-    obj: document.getElementById("obj"),
-    net: document.getElementById("net"),
-
-    round: document.getElementById("round"),
-    timer: document.getElementById("timer"),
-    bomb: document.getElementById("bomb"),
+    overlay:   document.getElementById("overlay"),
+    nameSel:   document.getElementById("nameSel"),
+    teamSel:   document.getElementById("teamSel"),
+    wsUrl:     document.getElementById("wsUrl"),
+    play:      document.getElementById("play"),
+    me:        document.getElementById("me"),
+    team:      document.getElementById("team"),
+    hp:        document.getElementById("hp"),
+    ammo:      document.getElementById("ammo"),
+    obj:       document.getElementById("obj"),
+    net:       document.getElementById("net"),
+    round:     document.getElementById("round"),
+    timer:     document.getElementById("timer"),
+    bomb:      document.getElementById("bomb"),
     phasePill: document.getElementById("phasePill"),
-
-    restart: document.getElementById("restart"),
-    swap: document.getElementById("swap"),
-    resetScore: document.getElementById("resetScore"),
+    scoreT:    document.getElementById("scoreT"),
+    scoreCT:   document.getElementById("scoreCT"),
+    killfeed:  document.getElementById("killfeed"),
+    restart:   document.getElementById("restart"),
+    swap:      document.getElementById("swap"),
+    resetScore:document.getElementById("resetScore"),
   };
-
-  ui.nameSel.innerHTML = NAMES.map(n=>`<option value="${n}">${n}</option>`).join("");
+  ui.nameSel.innerHTML = NAMES.map(n => `<option value="${n}">${n}</option>`).join("");
   ui.nameSel.value = "Damo";
 
-  // Input
-  const keys = new Set();
-  addEventListener("keydown", e => keys.add(e.key.toLowerCase()));
-  addEventListener("keyup", e => keys.delete(e.key.toLowerCase()));
-  const mouse = { x: innerWidth/2, y: innerHeight/2, down:false };
-  addEventListener("mousemove", e => { mouse.x=e.clientX; mouse.y=e.clientY; });
-  addEventListener("mousedown", () => mouse.down=true);
-  addEventListener("mouseup", () => mouse.down=false);
+  // ── Input ───────────────────────────────────────────────────────────────────
+  const keys  = new Set();
+  const mouse = { x: innerWidth / 2, y: innerHeight / 2, down: false };
+  addEventListener("keydown",   e => keys.add(e.key.toLowerCase()));
+  addEventListener("keyup",     e => keys.delete(e.key.toLowerCase()));
+  addEventListener("mousemove", e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  addEventListener("mousedown", () => mouse.down = true);
+  addEventListener("mouseup",   () => mouse.down = false);
 
-  // World / Map (más “CS”)
+  // ── World / Map ─────────────────────────────────────────────────────────────
   const world = {
-    w: 2400,
-    h: 1500,
+    w: 2400, h: 1500,
     walls: [
-      // Bordes internos + “pasillos”
-      {x:260,y:240,w:680,h:70},
-      {x:1040,y:170,w:70,h:520},
-      {x:1460,y:310,w:520,h:70},
-      {x:700,y:760,w:70,h:520},
-      {x:1160,y:900,w:600,h:70},
-      {x:1860,y:640,w:70,h:520},
-      {x:280,y:1030,w:520,h:70},
-
-      // Extras para “mid”
-      {x:900,y:520,w:400,h:60},
-      {x:1260,y:560,w:60,h:300},
-      {x:480,y:520,w:60,h:320},
-      {x:520,y:820,w:320,h:60},
+      {x:260, y:240,  w:680, h:70},
+      {x:1040,y:170,  w:70,  h:520},
+      {x:1460,y:310,  w:520, h:70},
+      {x:700, y:760,  w:70,  h:520},
+      {x:1160,y:900,  w:600, h:70},
+      {x:1860,y:640,  w:70,  h:520},
+      {x:280, y:1030, w:520, h:70},
+      {x:900, y:520,  w:400, h:60},
+      {x:1260,y:560,  w:60,  h:300},
+      {x:480, y:520,  w:60,  h:320},
+      {x:520, y:820,  w:320, h:60},
     ],
     spawns: {
-      T:  [{x:220,y:1300},{x:320,y:1260},{x:260,y:1180}],
-      CT: [{x:2140,y:240},{x:2040,y:320},{x:2200,y:340}],
+      T:  [{x:220, y:1300}, {x:320, y:1260}, {x:260, y:1180}],
+      CT: [{x:2140,y:240},  {x:2040,y:320},  {x:2200,y:340}],
     },
     sites: {
-      A: {x:1900,y:260,w:260,h:220},
-      B: {x:300,y:250,w:260,h:220},
-    }
+      A: {x:1900, y:260,  w:260, h:220},
+      B: {x:300,  y:250,  w:260, h:220},
+    },
   };
 
-  // Helpers
-  const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
-  const rand = (a,b)=>Math.random()*(b-a)+a;
+  // ── Constants ───────────────────────────────────────────────────────────────
+  const PLAYER_R    = 18;
+  const PLANT_TIME  = 1.6;
+  const DEFUSE_TIME = 3.2;
 
-  function circleRectCollide(cx,cy,r, rect){
-    const nx = clamp(cx, rect.x, rect.x+rect.w);
-    const ny = clamp(cy, rect.y, rect.y+rect.h);
-    const dx = cx-nx, dy = cy-ny;
-    return (dx*dx+dy*dy) <= r*r;
+  // ── Helpers ─────────────────────────────────────────────────────────────────
+  const clamp = (v, mn, mx) => Math.max(mn, Math.min(mx, v));
+  const rand  = (a, b) => Math.random() * (b - a) + a;
+
+  function circleRectCollide(cx, cy, r, rect) {
+    const nx = clamp(cx, rect.x, rect.x + rect.w);
+    const ny = clamp(cy, rect.y, rect.y + rect.h);
+    const dx = cx - nx, dy = cy - ny;
+    return (dx * dx + dy * dy) <= r * r;
+  }
+  function inRect(px, py, r) {
+    return px >= r.x && px <= r.x + r.w && py >= r.y && py <= r.y + r.h;
   }
 
-  // Multiplayer (opcional)
-  let ws = null;
+  // ── Multiplayer ─────────────────────────────────────────────────────────────
+  let ws      = null;
   let netMode = "offline";
-  const remotePlayers = new Map(); // id -> {x,y,team,name,hp}
+  const remotePlayers = new Map(); // id → {id, name, team, x, y, aim, hp, alive}
 
-  function wsConnect(url, me){
-    try{
-      ws = new WebSocket(url);
-    } catch { ws=null; return; }
-
+  function wsConnect(url, me) {
+    try { ws = new WebSocket(url); } catch { ws = null; return; }
     ws.onopen = () => {
       netMode = "online";
       ui.net.textContent = "online";
-      ws.send(JSON.stringify({t:"join", name:me.name, team:me.team}));
+      ws.send(JSON.stringify({ t: "join", name: me.name, team: me.team }));
     };
-    ws.onclose = () => { netMode="offline"; ui.net.textContent="offline"; ws=null; remotePlayers.clear(); };
-    ws.onerror = () => { netMode="offline"; ui.net.textContent="offline"; };
-
-    ws.onmessage = (ev) => {
-      let msg; try{ msg = JSON.parse(ev.data);}catch{ return; }
-      if (msg.t === "you"){ me.id = msg.id; }
-      if (msg.t === "state"){
-        // players array
-        for (const p of msg.players){
-          if (me.id && p.id === me.id) continue;
-          remotePlayers.set(p.id, p);
-        }
-        // cleanup removed
-        for (const id of Array.from(remotePlayers.keys())){
-          if (!msg.players.find(p=>p.id===id)) remotePlayers.delete(id);
-        }
-      }
-      if (msg.t === "shot" && msg.id !== me.id){
-        bullets.push({x:msg.x,y:msg.y,vx:msg.vx,vy:msg.vy,life:1.1, fromRemote:true});
-      }
-      if (msg.t === "bomb"){ bombState = msg.bombState; }
-      if (msg.t === "round"){ roundState = msg.roundState; }
+    ws.onclose = () => {
+      netMode = "offline"; ui.net.textContent = "offline"; ws = null;
+      remotePlayers.clear();
     };
+    ws.onerror = () => { netMode = "offline"; ui.net.textContent = "offline"; };
+    ws.onmessage = ev => handleServerMsg(JSON.parse(ev.data));
   }
 
-  function wsSend(obj){
+  function wsSend(obj) {
     if (!ws || ws.readyState !== 1) return;
     ws.send(JSON.stringify(obj));
   }
 
-  // Player
+  function handleServerMsg(msg) {
+    if (!msg || !msg.t) return;
+
+    // Full authoritative state broadcast
+    if (msg.t === "full") {
+      remotePlayers.clear();
+      for (const p of msg.players) {
+        if (player.id && p.id === player.id) {
+          // Sync our HP/alive from server; server is authority
+          player.hp    = p.hp;
+          player.alive = p.alive;
+        } else {
+          remotePlayers.set(p.id, p);
+        }
+      }
+      // Server-authoritative round & bomb state
+      if (netMode === "online") {
+        roundNum   = msg.round.roundNum;
+        roundState = { ...msg.round };
+        bombState  = { ...msg.bomb };
+        score.T    = msg.score.T;
+        score.CT   = msg.score.CT;
+      }
+      // Kill feed
+      renderKillFeed(msg.kills || []);
+      return;
+    }
+
+    if (msg.t === "you") {
+      player.id = msg.id;
+      return;
+    }
+
+    // Server spawns/respawns us
+    if (msg.t === "respawn") {
+      player.x      = msg.x;
+      player.y      = msg.y;
+      player.hp     = 100;
+      player.alive  = true;
+      player.ammo   = player.magSize;
+      player.reserve = 48;
+      player.reloading = 0;
+      return;
+    }
+
+    // We were killed by someone
+    if (msg.t === "killed") {
+      player.hp    = 0;
+      player.alive = false;
+      return;
+    }
+
+    // We took damage (but not fatal — server already updated hp via "full")
+    if (msg.t === "damage") {
+      // hp updated on next "full" — just a notification hook
+      return;
+    }
+
+    // Remote shot visual
+    if (msg.t === "shot" && msg.id !== player.id) {
+      bullets.push({ x: msg.x, y: msg.y, vx: msg.vx, vy: msg.vy, life: 1.1, fromRemote: true, ownerId: msg.id });
+    }
+  }
+
+  // ── Kill feed rendering ──────────────────────────────────────────────────────
+  function renderKillFeed(kills) {
+    ui.killfeed.innerHTML = kills.map(k =>
+      `<div class="kf-entry"><span class="kf-killer">${escHtml(k.killer)}</span> <span style="color:rgba(255,122,24,.5)">✦</span> <span class="kf-victim">${escHtml(k.victim)}</span></div>`
+    ).join("");
+  }
+  function escHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  }
+
+  // ── Player ──────────────────────────────────────────────────────────────────
   const player = {
     id: null,
     name: "Damo",
     team: "T",
-    x: world.w/2, y: world.h/2,
-    r: 18, hp: 100,
+    x: world.w / 2, y: world.h / 2,
+    r: PLAYER_R,
+    hp: 100,
+    alive: true,
     speed: 260,
-
     magSize: 12,
     ammo: 12,
     reserve: 48,
     reloadTime: 0.9,
     reloading: 0,
-
     fireRate: 0.13,
     cooldown: 0,
-    recoil: 0
+    recoil: 0,
+    aim: 0, // radians
   };
 
-  // Camera
-  const cam = { x:0, y:0 };
-  function updateCamera(){
-    cam.x = innerWidth/2 - player.x;
-    cam.y = innerHeight/2 - player.y;
-    cam.x = clamp(cam.x, innerWidth - world.w, 0);
-    cam.y = clamp(cam.y, innerHeight - world.h, 0);
-  }
+  // ── Score & round state ─────────────────────────────────────────────────────
+  const score = { T: 0, CT: 0 };
+  let roundNum   = 1;
+  let roundState = { phase: "freeze", phaseLeft: 4.0, liveLeft: 70.0, winner: null, reason: "" };
+  let bombState  = { status: "carried", plantedSite: null, x: null, y: null, timer: 0, plantProgress: 0, defuseProgress: 0 };
+  let plantHold  = 0;
+  let defuseHold = 0;
 
-  // Rounds
-  // freeze -> live -> end (win msg)
-  let roundNum = 1;
-  let roundState = { phase:"freeze", phaseLeft: 4.0, liveLeft: 70.0, winner:null, reason:"" };
-
-  // Bomb
-  // status: "none" | "carried" | "planted" | "exploded" | "defused"
-  let bombState = { status:"carried", carrierTeam:"T", plantedSite:null, x:null,y:null, timer:0, plantHold:0, defuseHold:0 };
-
-  // Bullets
+  // ── Bullets ─────────────────────────────────────────────────────────────────
   const bullets = [];
 
-  function spawnAtTeam(team){
-    const sp = world.spawns[team][Math.floor(Math.random()*world.spawns[team].length)];
+  // ── Camera ──────────────────────────────────────────────────────────────────
+  const cam = { x: 0, y: 0 };
+  function updateCamera() {
+    cam.x = clamp(innerWidth  / 2 - player.x, innerWidth  - world.w, 0);
+    cam.y = clamp(innerHeight / 2 - player.y, innerHeight - world.h, 0);
+  }
+
+  // ── Spawn helpers ────────────────────────────────────────────────────────────
+  function spawnAtTeam(team) {
+    const spawns = world.spawns[team];
+    const sp = spawns[Math.floor(Math.random() * spawns.length)];
     player.x = sp.x; player.y = sp.y;
   }
 
-  function resetRound(toFreeze=true){
-    // reset players
-    player.hp = 100;
-    player.ammo = player.magSize;
-    player.reserve = 48;
+  function resetRoundLocal(toFreeze = true) {
+    player.hp       = 100;
+    player.alive    = true;
+    player.ammo     = player.magSize;
+    player.reserve  = 48;
     player.reloading = 0;
     player.cooldown = 0;
-    player.recoil = 0;
-
+    player.recoil   = 0;
     spawnAtTeam(player.team);
-
-    // reset bomb
-    bombState = { status:"carried", carrierTeam:"T", plantedSite:null, x:null,y:null, timer:0, plantHold:0, defuseHold:0 };
-
-    // reset timers
-    roundState = { phase: toFreeze ? "freeze" : "live", phaseLeft: 4.0, liveLeft: 70.0, winner:null, reason:"" };
-    wsSend({t:"round", roundState});
-    wsSend({t:"bomb", bombState});
+    bombState  = { status: "carried", plantedSite: null, x: null, y: null, timer: 0, plantProgress: 0, defuseProgress: 0 };
+    plantHold  = 0; defuseHold = 0;
+    roundState = { phase: toFreeze ? "freeze" : "live", phaseLeft: 4.0, liveLeft: 70.0, winner: null, reason: "" };
   }
 
-  function endRound(winner, reason){
-    roundState.phase = "end";
-    roundState.winner = winner;
-    roundState.reason = reason;
+  function endRoundLocal(winner, reason) {
+    if (roundState.phase === "end") return;
+    roundState.phase    = "end";
+    roundState.winner   = winner;
+    roundState.reason   = reason;
     roundState.phaseLeft = 3.0;
-    wsSend({t:"round", roundState});
+    score[winner]++;
   }
 
-  function inRect(px,py, r){
-    return (px>=r.x && px<=r.x+r.w && py>=r.y && py<=r.y+r.h);
+  // ── Bomb helpers ─────────────────────────────────────────────────────────────
+  function canPlant() {
+    return player.team === "T" && player.alive && bombState.status === "carried" &&
+           (inRect(player.x, player.y, world.sites.A) || inRect(player.x, player.y, world.sites.B));
   }
-
-  function canPlant(){
-    if (player.team !== "T") return false;
-    if (bombState.status !== "carried") return false;
-    return inRect(player.x, player.y, world.sites.A) || inRect(player.x, player.y, world.sites.B);
-  }
-
-  function currentSite(){
+  function currentSite() {
     if (inRect(player.x, player.y, world.sites.A)) return "A";
     if (inRect(player.x, player.y, world.sites.B)) return "B";
     return null;
   }
-
-  function canDefuse(){
-    if (player.team !== "CT") return false;
-    if (bombState.status !== "planted") return false;
-    const dx = player.x - bombState.x;
-    const dy = player.y - bombState.y;
-    return (dx*dx + dy*dy) <= (80*80);
+  function canDefuse() {
+    if (player.team !== "CT" || !player.alive || bombState.status !== "planted") return false;
+    const dx = player.x - bombState.x, dy = player.y - bombState.y;
+    return dx * dx + dy * dy <= 80 * 80;
   }
 
-  // Shooting
-  function shoot(){
+  // ── Shoot ───────────────────────────────────────────────────────────────────
+  function shoot() {
     if (roundState.phase !== "live") return;
-    if (player.reloading>0) return;
-    if (player.cooldown>0) return;
-    if (player.ammo<=0) return;
+    if (!player.alive) return;
+    if (player.reloading > 0 || player.cooldown > 0 || player.ammo <= 0) return;
 
     player.cooldown = player.fireRate;
     player.ammo -= 1;
     player.recoil = Math.min(10, player.recoil + 1.2);
 
-    const angle = Math.atan2((mouse.y - cam.y) - player.y, (mouse.x - cam.x) - player.x);
-    const spread = (player.recoil * 0.002);
-    const a = angle + rand(-spread, spread);
+    const angle  = Math.atan2((mouse.y - cam.y) - player.y, (mouse.x - cam.x) - player.x);
+    player.aim   = angle;
+    const spread = player.recoil * 0.002;
+    const a      = angle + rand(-spread, spread);
+    const speed  = 820;
 
-    const speed = 820;
     const b = {
-      x: player.x + Math.cos(a)*(player.r+6),
-      y: player.y + Math.sin(a)*(player.r+6),
-      vx: Math.cos(a)*speed,
-      vy: Math.sin(a)*speed,
-      life: 1.1,
-      fromRemote:false
+      x: player.x + Math.cos(a) * (PLAYER_R + 6),
+      y: player.y + Math.sin(a) * (PLAYER_R + 6),
+      vx: Math.cos(a) * speed, vy: Math.sin(a) * speed,
+      life: 1.1, fromRemote: false, ownerId: player.id,
     };
     bullets.push(b);
-
-    // send shot to others
-    wsSend({t:"shot", x:b.x, y:b.y, vx:b.vx, vy:b.vy});
+    wsSend({ t: "shot", x: b.x, y: b.y, vx: b.vx, vy: b.vy });
   }
 
-  function reload(){
-    if (player.reloading>0) return;
-    if (player.ammo === player.magSize) return;
-    if (player.reserve <= 0) return;
+  function reload() {
+    if (player.reloading > 0 || player.ammo === player.magSize || player.reserve <= 0) return;
     player.reloading = player.reloadTime;
   }
 
-  function moveCircle(ent, dx, dy){
+  // ── Movement with wall collision ─────────────────────────────────────────────
+  function moveCircle(ent, dx, dy) {
     ent.x += dx;
     ent.x = clamp(ent.x, ent.r, world.w - ent.r);
-    for (const w of world.walls){
-      if (circleRectCollide(ent.x, ent.y, ent.r, w)){ ent.x -= dx; break; }
+    for (const w of world.walls) {
+      if (circleRectCollide(ent.x, ent.y, ent.r, w)) { ent.x -= dx; break; }
     }
     ent.y += dy;
     ent.y = clamp(ent.y, ent.r, world.h - ent.r);
-    for (const w of world.walls){
-      if (circleRectCollide(ent.x, ent.y, ent.r, w)){ ent.y -= dy; break; }
+    for (const w of world.walls) {
+      if (circleRectCollide(ent.x, ent.y, ent.r, w)) { ent.y -= dy; break; }
     }
   }
 
-  // UI / Lobby
+  // ── UI events ────────────────────────────────────────────────────────────────
   ui.play.onclick = () => {
     player.name = ui.nameSel.value;
     player.team = ui.teamSel.value;
     ui.overlay.style.display = "none";
-
     spawnAtTeam(player.team);
-
     const url = ui.wsUrl.value.trim();
     if (url) wsConnect(url, player);
-
     updateUI();
-    resetRound(true);
+    resetRoundLocal(true);
   };
 
-  ui.restart.onclick = () => resetRound(true);
+  ui.restart.onclick = () => {
+    if (netMode === "online") {
+      // Server controls round — just notify
+      wsSend({ t: "join", name: player.name, team: player.team });
+    } else {
+      resetRoundLocal(true);
+    }
+  };
 
   ui.swap.onclick = () => {
-    player.team = (player.team === "T" ? "CT" : "T");
+    player.team = player.team === "T" ? "CT" : "T";
     spawnAtTeam(player.team);
-    wsSend({t:"join", name:player.name, team:player.team}); // update server state
+    wsSend({ t: "join", name: player.name, team: player.team });
     updateUI();
   };
 
   ui.resetScore.onclick = () => {
-    // solo cosmetic: reinicia ronda / bomba
-    resetRound(true);
+    score.T = 0; score.CT = 0;
+    resetRoundLocal(true);
   };
 
-  function updateUI(){
-    ui.me.textContent = player.name;
-    ui.team.textContent = (player.team === "T" ? "T (Terrorists)" : "CT (Counter-Terrorists)");
-    ui.phasePill.textContent = roundState.phase.toUpperCase();
-    ui.phasePill.className = "pill " + (player.team === "CT" ? "ct" : "t");
-  }
-
-  // Loop
+  // ── Game loop ────────────────────────────────────────────────────────────────
   let last = performance.now();
-  requestAnimationFrame(function loop(now){
-    const dt = Math.min(0.033, (now-last)/1000);
+  requestAnimationFrame(function loop(now) {
+    const dt = Math.min(0.033, (now - last) / 1000);
     last = now;
-
     tick(dt);
     draw();
-
     requestAnimationFrame(loop);
   });
 
-  function tick(dt){
-    // timers
-    if (player.cooldown>0) player.cooldown -= dt;
-    if (player.recoil>0) player.recoil = Math.max(0, player.recoil - dt*6);
+  function tick(dt) {
+    // Cooldowns
+    if (player.cooldown > 0) player.cooldown -= dt;
+    if (player.recoil   > 0) player.recoil = Math.max(0, player.recoil - dt * 6);
 
-    if (player.reloading>0){
+    // Reload
+    if (player.reloading > 0) {
       player.reloading -= dt;
-      if (player.reloading<=0){
+      if (player.reloading <= 0) {
         const need = player.magSize - player.ammo;
         const take = Math.min(need, player.reserve);
-        player.ammo += take;
+        player.ammo    += take;
         player.reserve -= take;
         player.reloading = 0;
       }
     }
 
-    // round phases
-    if (roundState.phase === "freeze"){
-      roundState.phaseLeft -= dt;
-      if (roundState.phaseLeft <= 0){
-        roundState.phase = "live";
-        wsSend({t:"round", roundState});
-      }
-    } else if (roundState.phase === "live"){
-      roundState.liveLeft -= dt;
-
-      // time out => CT win (default)
-      if (roundState.liveLeft <= 0 && bombState.status !== "planted"){
-        endRound("CT", "Tiempo");
-      }
-    } else if (roundState.phase === "end"){
-      roundState.phaseLeft -= dt;
-      if (roundState.phaseLeft <= 0){
-        roundNum++;
-        resetRound(true);
+    // ── Round state (local only when offline) ───────────────────────────────
+    if (netMode !== "online") {
+      if (roundState.phase === "freeze") {
+        roundState.phaseLeft -= dt;
+        if (roundState.phaseLeft <= 0) { roundState.phase = "live"; roundState.phaseLeft = 0; }
+      } else if (roundState.phase === "live") {
+        if (bombState.status === "planted") {
+          bombState.timer -= dt;
+          if (bombState.timer <= 0) { bombState.status = "exploded"; endRoundLocal("T", "Bomba explotó"); }
+        } else {
+          roundState.liveLeft -= dt;
+          if (roundState.liveLeft <= 0) endRoundLocal("CT", "Tiempo");
+        }
+      } else if (roundState.phase === "end") {
+        roundState.phaseLeft -= dt;
+        if (roundState.phaseLeft <= 0) { roundNum++; resetRoundLocal(true); }
       }
     }
 
-    // bomb tick
-    if (bombState.status === "planted"){
-      bombState.timer -= dt;
-      if (bombState.timer <= 0){
-        bombState.status = "exploded";
-        wsSend({t:"bomb", bombState});
-        endRound("T", "Bomba explotó");
-      }
+    // ── Input ────────────────────────────────────────────────────────────────
+    if (keys.has("r") && player.alive) reload();
+
+    // Movement (freeze = no move; dead = no move)
+    if (roundState.phase === "live" && player.alive) {
+      const ax = (keys.has("d") ? 1 : 0) - (keys.has("a") ? 1 : 0);
+      const ay = (keys.has("s") ? 1 : 0) - (keys.has("w") ? 1 : 0);
+      const len = Math.hypot(ax, ay) || 1;
+      moveCircle(player, (ax / len) * player.speed * dt, (ay / len) * player.speed * dt);
     }
 
-    // input
-    if (keys.has("r")) reload();
-
-    const ax = (keys.has("d")?1:0) - (keys.has("a")?1:0);
-    const ay = (keys.has("s")?1:0) - (keys.has("w")?1:0);
-    const len = Math.hypot(ax,ay) || 1;
-    const vx = (ax/len) * player.speed;
-    const vy = (ay/len) * player.speed;
-
-    if (roundState.phase !== "end"){
-      // freeze: no movement
-      if (roundState.phase === "live"){
-        moveCircle(player, vx*dt, vy*dt);
-      }
-    }
-
-    // shoot
+    // Shoot
     if (mouse.down) shoot();
 
-    // interact (E)
-    if (keys.has("e")){
-      if (roundState.phase === "live"){
-        // plant
-        if (canPlant()){
-          bombState.plantHold += dt;
-          if (bombState.plantHold >= 1.6){
-            const site = currentSite();
-            bombState.status = "planted";
-            bombState.plantedSite = site;
-            bombState.x = player.x;
-            bombState.y = player.y;
-            bombState.timer = 35.0;
-            bombState.plantHold = 0;
-            wsSend({t:"bomb", bombState});
-          }
-        } else {
-          bombState.plantHold = 0;
-        }
+    // Aim angle (update continuously for drawing even when not shooting)
+    player.aim = Math.atan2((mouse.y - cam.y) - player.y, (mouse.x - cam.x) - player.x);
 
-        // defuse
-        if (canDefuse()){
-          bombState.defuseHold += dt;
-          if (bombState.defuseHold >= 3.2){
-            bombState.status = "defused";
-            wsSend({t:"bomb", bombState});
-            endRound("CT", "Defuse");
-          }
+    // ── Interact (E) — plant / defuse ────────────────────────────────────────
+    if (keys.has("e") && roundState.phase === "live" && player.alive) {
+      // Plant
+      if (canPlant()) {
+        plantHold += dt;
+        if (netMode === "online") {
+          wsSend({ t: "plant", progress: plantHold / PLANT_TIME });
         } else {
-          bombState.defuseHold = 0;
+          if (plantHold >= PLANT_TIME) {
+            const site = currentSite();
+            bombState.status      = "planted";
+            bombState.plantedSite = site;
+            bombState.x           = player.x;
+            bombState.y           = player.y;
+            bombState.timer       = 35.0;
+            plantHold = 0;
+          }
         }
+      } else {
+        plantHold = 0;
+        if (netMode === "online") wsSend({ t: "actionStop" });
+      }
+
+      // Defuse
+      if (canDefuse()) {
+        defuseHold += dt;
+        if (netMode === "online") {
+          wsSend({ t: "defuse", progress: defuseHold / DEFUSE_TIME });
+        } else {
+          if (defuseHold >= DEFUSE_TIME) {
+            bombState.status = "defused";
+            defuseHold = 0;
+            endRoundLocal("CT", "Defuse");
+          }
+        }
+      } else {
+        defuseHold = 0;
       }
     } else {
-      bombState.plantHold = 0;
-      bombState.defuseHold = 0;
+      if (plantHold > 0 || defuseHold > 0) wsSend({ t: "actionStop" });
+      plantHold  = 0;
+      defuseHold = 0;
     }
 
-    // bullets
-    for (let i=bullets.length-1; i>=0; i--){
+    // ── Bullets ──────────────────────────────────────────────────────────────
+    for (let i = bullets.length - 1; i >= 0; i--) {
       const b = bullets[i];
-      b.x += b.vx*dt;
-      b.y += b.vy*dt;
+      b.x += b.vx * dt;
+      b.y += b.vy * dt;
       b.life -= dt;
 
-      // walls hit
+      // Wall hit
       let hitWall = false;
-      for (const w of world.walls){
-        if (b.x>=w.x && b.x<=w.x+w.w && b.y>=w.y && b.y<=w.y+w.h){ hitWall=true; break; }
-      }
-
-      // hit local player only if remote bullet (para demo)
-      if (!hitWall && b.fromRemote && roundState.phase==="live"){
-        const dx = player.x - b.x, dy = player.y - b.y;
-        if (dx*dx + dy*dy <= player.r*player.r){
-          player.hp -= 20;
-          if (player.hp <= 0){
-            player.hp = 0;
-            endRound(player.team === "T" ? "CT" : "T", "Eliminación");
-          }
-          bullets.splice(i,1);
-          continue;
+      for (const w of world.walls) {
+        if (b.x >= w.x && b.x <= w.x + w.w && b.y >= w.y && b.y <= w.y + w.h) {
+          hitWall = true; break;
         }
       }
 
-      if (b.life<=0 || hitWall) bullets.splice(i,1);
-    }
+      if (!hitWall) {
+        // Local bullet hits remote players (online: report to server)
+        if (!b.fromRemote && roundState.phase === "live" && player.alive) {
+          let hitRemote = false;
+          for (const [, rp] of remotePlayers) {
+            if (!rp.alive || rp.team === player.team) continue;
+            const dx = rp.x - b.x, dy = rp.y - b.y;
+            if (dx * dx + dy * dy <= PLAYER_R * PLAYER_R) {
+              wsSend({ t: "hit", targetId: rp.id, damage: 20 });
+              hitRemote = true;
+              break;
+            }
+          }
+          if (hitRemote) { bullets.splice(i, 1); continue; }
+        }
 
-    // camera + hud text
-    updateCamera();
-    ui.hp.textContent = `${player.hp}/100`;
-    ui.ammo.textContent = `${player.ammo}/${player.reserve}` + (player.reloading>0 ? " (reloading…)" : "");
-
-    ui.round.textContent = `#${roundNum}`;
-    ui.timer.textContent = (roundState.phase==="live" ? `${roundState.liveLeft.toFixed(0)}s` : `${Math.max(0,roundState.phaseLeft).toFixed(0)}s`);
-
-    if (bombState.status === "carried"){
-      ui.bomb.textContent = "No plantada";
-    } else if (bombState.status === "planted"){
-      ui.bomb.textContent = `PLANTED ${bombState.plantedSite} · ${bombState.timer.toFixed(0)}s`;
-    } else if (bombState.status === "defused"){
-      ui.bomb.textContent = "DEFUSED";
-    } else if (bombState.status === "exploded"){
-      ui.bomb.textContent = "BOOM";
-    }
-
-    // objective helper
-    if (roundState.phase === "freeze"){
-      ui.obj.textContent = "Freeze time";
-    } else if (roundState.phase === "end"){
-      ui.obj.textContent = `${roundState.winner} gana · ${roundState.reason}`;
-    } else {
-      if (player.team==="T"){
-        ui.obj.textContent = canPlant() ? `Plantá en ${currentSite()} (E)` : "Buscá A o B para plantar";
-      } else {
-        ui.obj.textContent = canDefuse() ? "Defuse (E)" : (bombState.status==="planted" ? "Andá a la bomba" : "Evitar plant");
+        // Remote bullet hits local player (offline simulation only — online: server handles)
+        if (b.fromRemote && netMode === "offline" && roundState.phase === "live" && player.alive) {
+          const dx = player.x - b.x, dy = player.y - b.y;
+          if (dx * dx + dy * dy <= PLAYER_R * PLAYER_R) {
+            player.hp -= 20;
+            if (player.hp <= 0) {
+              player.hp    = 0;
+              player.alive = false;
+              endRoundLocal(player.team === "T" ? "CT" : "T", "Eliminación");
+            }
+            bullets.splice(i, 1);
+            continue;
+          }
+        }
       }
+
+      if (b.life <= 0 || hitWall) bullets.splice(i, 1);
     }
 
-    // multiplayer state tick
-    if (netMode==="online"){
-      wsSend({t:"pos", x:player.x, y:player.y, hp:player.hp, team:player.team, name:player.name});
-      ui.net.textContent = "online";
-    } else {
-      ui.net.textContent = "offline";
+    // ── Camera & HUD text ────────────────────────────────────────────────────
+    updateCamera();
+
+    // Send position to server
+    if (netMode === "online") {
+      wsSend({ t: "pos", x: player.x, y: player.y, aim: player.aim, hp: player.hp, team: player.team, name: player.name });
     }
 
     updateUI();
   }
 
-  function draw(){
-    // background
-    ctx.fillStyle = "#07090c";
-    ctx.fillRect(0,0,innerWidth,innerHeight);
+  function updateUI() {
+    ui.me.textContent     = player.name;
+    ui.team.textContent   = player.team === "T" ? "T (Terrorists)" : "CT (Counter-Terrorists)";
+    ui.hp.textContent     = player.alive ? `${player.hp}/100` : "MUERTO";
+    ui.ammo.textContent   = `${player.ammo}/${player.reserve}` + (player.reloading > 0 ? " (recargando…)" : "");
+    ui.round.textContent  = `#${roundNum}`;
+    ui.scoreT.textContent = `T: ${score.T}`;
+    ui.scoreCT.textContent= `CT: ${score.CT}`;
+    ui.net.textContent    = netMode;
 
-    // world
+    ui.timer.textContent = roundState.phase === "live"
+      ? `${Math.max(0, roundState.liveLeft).toFixed(0)}s`
+      : `${Math.max(0, roundState.phaseLeft).toFixed(0)}s`;
+
+    // Bomb status
+    if (bombState.status === "carried") {
+      ui.bomb.textContent = "No plantada";
+    } else if (bombState.status === "planted") {
+      ui.bomb.textContent = `PLANTED ${bombState.plantedSite} · ${Math.max(0, bombState.timer).toFixed(0)}s`;
+    } else if (bombState.status === "defused") {
+      ui.bomb.textContent = "DEFUSED";
+    } else if (bombState.status === "exploded") {
+      ui.bomb.textContent = "BOOM";
+    }
+
+    // Phase pill
+    ui.phasePill.textContent = roundState.phase.toUpperCase();
+    ui.phasePill.className = "pill " + (player.team === "CT" ? "ct" : "t");
+
+    // Objective
+    if (roundState.phase === "freeze") {
+      ui.obj.textContent = "Freeze time";
+    } else if (roundState.phase === "end") {
+      ui.obj.textContent = `${roundState.winner} gana · ${roundState.reason}`;
+    } else if (!player.alive) {
+      ui.obj.textContent = "Esperando siguiente ronda…";
+    } else if (player.team === "T") {
+      ui.obj.textContent = canPlant()
+        ? `Plantá en ${currentSite()} (mantené E)`
+        : "Buscá A o B para plantar";
+    } else {
+      ui.obj.textContent = canDefuse()
+        ? "Defusea (mantené E)"
+        : (bombState.status === "planted" ? "Andá a la bomba!" : "Evitar el plant");
+    }
+  }
+
+  // ── Draw ─────────────────────────────────────────────────────────────────────
+  function draw() {
+    ctx.fillStyle = "#07090c";
+    ctx.fillRect(0, 0, innerWidth, innerHeight);
+
     ctx.save();
     ctx.translate(cam.x, cam.y);
 
-    // grid
-    ctx.globalAlpha = 0.10;
+    // Grid
+    ctx.globalAlpha = 0.08;
     ctx.strokeStyle = "white";
-    for (let x=0; x<=world.w; x+=80){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,world.h); ctx.stroke(); }
-    for (let y=0; y<=world.h; y+=80){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(world.w,y); ctx.stroke(); }
+    for (let x = 0; x <= world.w; x += 80) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, world.h); ctx.stroke(); }
+    for (let y = 0; y <= world.h; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(world.w, y); ctx.stroke(); }
     ctx.globalAlpha = 1;
 
-    // sites A/B
+    // Bomb sites
     drawSite("A", world.sites.A, "rgba(100,200,255,.10)", "rgba(100,200,255,.30)");
-    drawSite("B", world.sites.B, "rgba(255,155,61,.10)", "rgba(255,155,61,.30)");
+    drawSite("B", world.sites.B, "rgba(255,155,61,.10)",  "rgba(255,155,61,.30)");
 
-    // walls
-    for (const w of world.walls){
-      ctx.fillStyle = "rgba(255,255,255,.06)";
-      ctx.fillRect(w.x,w.y,w.w,w.h);
+    // Walls
+    for (const w of world.walls) {
+      ctx.fillStyle  = "rgba(255,255,255,.06)";
+      ctx.fillRect(w.x, w.y, w.w, w.h);
       ctx.strokeStyle = "rgba(255,122,24,.20)";
-      ctx.strokeRect(w.x+0.5,w.y+0.5,w.w-1,w.h-1);
+      ctx.strokeRect(w.x + 0.5, w.y + 0.5, w.w - 1, w.h - 1);
     }
 
-    // bomb on ground
-    if (bombState.status==="planted"){
-      ctx.fillStyle = "rgba(255,122,24,.95)";
-      ctx.beginPath(); ctx.arc(bombState.x, bombState.y, 8, 0, Math.PI*2); ctx.fill();
-      ctx.strokeStyle = "rgba(255,255,255,.2)";
-      ctx.beginPath(); ctx.arc(bombState.x, bombState.y, 30, 0, Math.PI*2); ctx.stroke();
+    // Bomb on ground
+    if (bombState.status === "planted") {
+      const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 200);
+      ctx.fillStyle = `rgba(255,${Math.floor(80 + pulse * 42)},24,.95)`;
+      ctx.beginPath(); ctx.arc(bombState.x, bombState.y, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = `rgba(255,122,24,${0.3 + pulse * 0.3})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(bombState.x, bombState.y, 24 + pulse * 8, 0, Math.PI * 2); ctx.stroke();
+      ctx.lineWidth = 1;
     }
 
-    // remote players
-    for (const p of remotePlayers.values()){
-      drawAgent(p, p.team==="CT" ? "rgba(100,200,255,.95)" : "rgba(255,155,61,.95)");
-      drawName(p.name, p.x, p.y - 34, "rgba(233,238,246,.8)");
+    // Remote players
+    for (const p of remotePlayers.values()) {
+      const fill = p.team === "CT" ? "rgba(100,200,255,.95)" : "rgba(255,155,61,.95)";
+      drawAgent(p, fill, p.aim, p.alive);
+      if (p.alive) drawName(p.name, p.x, p.y - 34, "rgba(233,238,246,.8)");
     }
 
-    // local player
-    drawAgent(player, player.team==="CT" ? "rgba(100,200,255,.95)" : "rgba(255,155,61,.95)");
+    // Local player
+    const localFill = player.team === "CT" ? "rgba(100,200,255,.95)" : "rgba(255,155,61,.95)";
+    drawAgent(player, localFill, player.aim, player.alive);
     drawName(player.name, player.x, player.y - 34, "rgba(233,238,246,.92)");
 
-    // aim line
-    const tx = (mouse.x - cam.x), ty = (mouse.y - cam.y);
-    ctx.strokeStyle = "rgba(255,122,24,.25)";
-    ctx.beginPath(); ctx.moveTo(player.x, player.y); ctx.lineTo(tx,ty); ctx.stroke();
+    // Aim line (only when alive)
+    if (player.alive && roundState.phase === "live") {
+      const tx = mouse.x - cam.x, ty = mouse.y - cam.y;
+      ctx.strokeStyle = "rgba(255,122,24,.18)";
+      ctx.setLineDash([4, 8]);
+      ctx.beginPath(); ctx.moveTo(player.x, player.y); ctx.lineTo(tx, ty); ctx.stroke();
+      ctx.setLineDash([]);
+    }
 
-    // bullets
-    ctx.fillStyle = "rgba(255,155,61,.95)";
-    for (const b of bullets){
-      ctx.beginPath(); ctx.arc(b.x,b.y,3,0,Math.PI*2); ctx.fill();
+    // Bullets
+    for (const b of bullets) {
+      ctx.fillStyle = b.fromRemote ? "rgba(255,80,80,.9)" : "rgba(255,155,61,.95)";
+      ctx.beginPath(); ctx.arc(b.x, b.y, 3, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // Plant/defuse progress bar
+    const actionProgress = plantHold > 0
+      ? { p: plantHold / PLANT_TIME,  label: "PLANTANDO…" }
+      : defuseHold > 0
+      ? { p: defuseHold / DEFUSE_TIME, label: "DEFUSEANDO…" }
+      : null;
+
+    if (actionProgress) {
+      const barW = 220, barH = 8;
+      const bx   = innerWidth / 2 - barW / 2;
+      const by   = innerHeight - 70;
+      ctx.fillStyle = "rgba(0,0,0,.6)";
+      ctx.fillRect(bx - 8, by - 24, barW + 16, barH + 34);
+      ctx.fillStyle = "rgba(255,122,24,.2)";
+      ctx.fillRect(bx, by, barW, barH);
+      ctx.fillStyle = "rgba(255,122,24,.95)";
+      ctx.fillRect(bx, by, barW * Math.min(1, actionProgress.p), barH);
+      ctx.fillStyle = "rgba(233,238,246,.9)";
+      ctx.font = "bold 12px ui-monospace, Menlo, monospace";
+      ctx.textAlign = "center";
+      ctx.fillText(actionProgress.label, innerWidth / 2, by - 6);
+      ctx.textAlign = "left";
     }
 
     ctx.restore();
 
-    // crosshair
-    ctx.strokeStyle = "rgba(255,155,61,.85)";
-    ctx.beginPath();
-    ctx.moveTo(mouse.x-10, mouse.y); ctx.lineTo(mouse.x-4, mouse.y);
-    ctx.moveTo(mouse.x+4, mouse.y); ctx.lineTo(mouse.x+10, mouse.y);
-    ctx.moveTo(mouse.x, mouse.y-10); ctx.lineTo(mouse.x, mouse.y-4);
-    ctx.moveTo(mouse.x, mouse.y+4); ctx.lineTo(mouse.x, mouse.y+10);
-    ctx.stroke();
+    // Crosshair
+    if (player.alive) {
+      const gap = 4 + player.recoil * 0.5;
+      ctx.strokeStyle = "rgba(255,155,61,.85)";
+      ctx.lineWidth   = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(mouse.x - 10, mouse.y); ctx.lineTo(mouse.x - gap, mouse.y);
+      ctx.moveTo(mouse.x + gap, mouse.y); ctx.lineTo(mouse.x + 10, mouse.y);
+      ctx.moveTo(mouse.x, mouse.y - 10); ctx.lineTo(mouse.x, mouse.y - gap);
+      ctx.moveTo(mouse.x, mouse.y + gap); ctx.lineTo(mouse.x, mouse.y + 10);
+      ctx.stroke();
+      ctx.lineWidth = 1;
+    }
+
+    // Dead overlay
+    if (!player.alive) {
+      ctx.fillStyle = "rgba(160,10,10,.22)";
+      ctx.fillRect(0, 0, innerWidth, innerHeight);
+      ctx.fillStyle = "rgba(233,238,246,.9)";
+      ctx.font = "bold 32px ui-monospace, Menlo, monospace";
+      ctx.textAlign = "center";
+      ctx.fillText("MUERTO", innerWidth / 2, innerHeight / 2 - 18);
+      ctx.font = "13px ui-monospace, Menlo, monospace";
+      ctx.fillStyle = "rgba(233,238,246,.5)";
+      ctx.fillText("Esperando siguiente ronda…", innerWidth / 2, innerHeight / 2 + 14);
+      ctx.textAlign = "left";
+    }
+
+    // Round-end overlay
+    if (roundState.phase === "end") {
+      const winner = roundState.winner;
+      const isOurs = winner === player.team;
+      ctx.fillStyle = isOurs ? "rgba(0,80,0,.25)" : "rgba(80,0,0,.25)";
+      ctx.fillRect(0, 0, innerWidth, innerHeight);
+      ctx.fillStyle = isOurs ? "rgba(100,255,120,.95)" : "rgba(255,80,80,.95)";
+      ctx.font = "bold 36px ui-monospace, Menlo, monospace";
+      ctx.textAlign = "center";
+      ctx.fillText(`${winner} gana · ${roundState.reason}`, innerWidth / 2, innerHeight / 2 - 10);
+      ctx.font = "14px ui-monospace, Menlo, monospace";
+      ctx.fillStyle = "rgba(233,238,246,.6)";
+      ctx.fillText(`Ronda ${roundNum} · T:${score.T}  CT:${score.CT}`, innerWidth / 2, innerHeight / 2 + 22);
+      ctx.textAlign = "left";
+    }
   }
 
-  function drawSite(label, r, fill, stroke){
+  function drawSite(label, r, fill, stroke) {
     ctx.fillStyle = fill;
     ctx.fillRect(r.x, r.y, r.w, r.h);
     ctx.strokeStyle = stroke;
-    ctx.strokeRect(r.x+0.5, r.y+0.5, r.w-1, r.h-1);
-    ctx.fillStyle = "rgba(0,0,0,.45)";
-    ctx.fillRect(r.x+8, r.y+8, 28, 18);
+    ctx.strokeRect(r.x + 0.5, r.y + 0.5, r.w - 1, r.h - 1);
+    ctx.fillStyle = "rgba(0,0,0,.5)";
+    ctx.fillRect(r.x + 8, r.y + 8, 28, 18);
     ctx.fillStyle = "rgba(233,238,246,.9)";
     ctx.font = "12px ui-monospace, Menlo, monospace";
-    ctx.fillText(label, r.x+18, r.y+22);
+    ctx.fillText(label, r.x + 18, r.y + 22);
   }
 
-  function drawAgent(ent, fill){
-    // glow
-    ctx.fillStyle = "rgba(0,0,0,.20)";
-    ctx.beginPath(); ctx.arc(ent.x, ent.y, 28, 0, Math.PI*2); ctx.fill();
-    // body
-    ctx.fillStyle = fill;
-    ctx.beginPath(); ctx.arc(ent.x, ent.y, 18, 0, Math.PI*2); ctx.fill();
-    // facing dot
-    const tx = (mouse.x - cam.x), ty = (mouse.y - cam.y);
-    const a = Math.atan2(ty - ent.y, tx - ent.x);
-    ctx.fillStyle = "rgba(0,0,0,.35)";
-    ctx.beginPath(); ctx.arc(ent.x + Math.cos(a)*8, ent.y + Math.sin(a)*8, 4, 0, Math.PI*2); ctx.fill();
+  function drawAgent(ent, fill, aimAngle, alive) {
+    const alpha = alive ? 1 : 0.35;
+    // Shadow glow
+    ctx.globalAlpha = 0.20 * alpha;
+    ctx.fillStyle = "rgba(0,0,0,1)";
+    ctx.beginPath(); ctx.arc(ent.x, ent.y, 28, 0, Math.PI * 2); ctx.fill();
+    // Body
+    ctx.globalAlpha = alive ? 1 : 0.4;
+    ctx.fillStyle = alive ? fill : "rgba(120,120,120,.7)";
+    ctx.beginPath(); ctx.arc(ent.x, ent.y, PLAYER_R, 0, Math.PI * 2); ctx.fill();
+    // Facing dot
+    const a = aimAngle ?? 0;
+    ctx.fillStyle = "rgba(0,0,0,.45)";
+    ctx.beginPath(); ctx.arc(ent.x + Math.cos(a) * 8, ent.y + Math.sin(a) * 8, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.globalAlpha = 1;
   }
 
-  function drawName(text, x, y, color){
+  function drawName(text, x, y, color) {
     ctx.font = "12px ui-monospace, Menlo, monospace";
     const w = ctx.measureText(text).width;
-    ctx.fillStyle = "rgba(0,0,0,.45)";
-    ctx.fillRect(x - w/2 - 6, y - 12, w + 12, 16);
+    ctx.fillStyle = "rgba(0,0,0,.5)";
+    ctx.fillRect(x - w / 2 - 6, y - 12, w + 12, 16);
     ctx.fillStyle = color;
-    ctx.fillText(text, x - w/2, y);
+    ctx.fillText(text, x - w / 2, y);
   }
 })();
 </script>
