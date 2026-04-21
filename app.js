@@ -1,4 +1,125 @@
-console.log("app.js cargó OK ✅");
+console.log("app.js cargó OK ✅ 🎮 REDISEÑO INTERACTIVO");
+
+// === PARALLAX SCROLLING ===
+const parallaxLayers = document.querySelectorAll(".parallax-layer");
+function initParallax() {
+  window.addEventListener("scroll", () => {
+    const scrolled = window.scrollY;
+    parallaxLayers.forEach((layer, idx) => {
+      const speed = 0.5 + idx * 0.15;
+      layer.style.transform = `translateY(${scrolled * speed}px)`;
+    });
+  });
+}
+initParallax();
+
+// === PARTICLES CANVAS ===
+function initParticles() {
+  const canvas = document.querySelector(".particles-canvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const particleCount = 40;
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = Math.random() * 0.3 - 0.15;
+      this.speedY = Math.random() * 0.3 - 0.15;
+      this.opacity = Math.random() * 0.5 + 0.2;
+      this.color = Math.random() > 0.5 ? "rgba(255,122,24," : "rgba(100,200,255,";
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0) this.x = canvas.width;
+      if (this.x > canvas.width) this.x = 0;
+      if (this.y < 0) this.y = canvas.height;
+      if (this.y > canvas.height) this.y = 0;
+    }
+    draw() {
+      ctx.fillStyle = this.color + this.opacity + ")";
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p) => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+}
+initParticles();
+
+// === SCROLL ANIMATIONS ===
+function initScrollAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll("[data-animate]").forEach((el) => {
+    observer.observe(el);
+  });
+}
+initScrollAnimations();
+
+// === 3D CARD EFFECTS ===
+function init3DCards() {
+  document.querySelectorAll(".player-card").forEach((card) => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = (y - centerY) / 20;
+      const rotateY = (centerX - x) / 20;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "perspective(1000px) rotateX(0) rotateY(0) translateZ(0)";
+    });
+  });
+}
+init3DCards();
+
+// === BUTTON MOUSE TRACKING ===
+function initButtonEffects() {
+  document.querySelectorAll(".btn").forEach((btn) => {
+    btn.addEventListener("mousemove", (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      btn.style.setProperty("--mouse-x", x + "%");
+      btn.style.setProperty("--mouse-y", y + "%");
+    });
+  });
+}
+initButtonEffects();
 
 // Año footer
 const year = document.getElementById("year");
@@ -23,7 +144,7 @@ document.querySelectorAll(".nav-links a").forEach((a) => {
 
 // Countdown — Próxima LAN: Sábado 30 May 2026, 18:00hs Argentina (UTC-3)
 function initCountdown() {
-  const target = new Date("2026-05-30T21:00:00Z"); // 30 May 18:00 ART = UTC-3 → UTC 21:00
+  const target = new Date("2026-05-30T21:00:00Z");
 
   function tick() {
     const now = new Date();
@@ -60,7 +181,7 @@ function initCountdown() {
 }
 initCountdown();
 
-// Estado del servidor (REAL)
+// Estado del servidor
 const serverStatus = document.getElementById("serverStatus");
 const statOnline = document.getElementById("statOnline");
 
@@ -155,12 +276,12 @@ if (form) {
   function openGame(){
     modal.classList.add("open");
     modal.setAttribute("aria-hidden","false");
-    frame.src = "./game/"; // carga el juego
+    frame.src = "./game/";
   }
   function closeGame(){
     modal.classList.remove("open");
     modal.setAttribute("aria-hidden","true");
-    frame.src = ""; // descarga el iframe para que no consuma recursos
+    frame.src = "";
   }
 
   openBtn.addEventListener("click", openGame);
