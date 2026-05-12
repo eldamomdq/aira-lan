@@ -524,6 +524,17 @@ h1{
   place-items:center;
   background:rgba(0,0,0,.35);
   opacity:0;
+  font-family:'Rajdhani',system-ui;
+  font-weight:700;
+  font-size:18px;
+  color:var(--orange2);
+}
+.player-avatar:has(> img) span{
+  opacity: 0;
+}
+.player-avatar:not(:has(> img)) span{
+  opacity: 1;
+  background: linear-gradient(135deg,rgba(255,122,24,.25),rgba(255,122,24,.08));
 }
 
 .player-card.rookie .player-avatar{
