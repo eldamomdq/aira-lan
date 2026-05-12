@@ -264,31 +264,3 @@ if (form) {
   });
 }
 
-(() => {
-  const modal = document.getElementById("gameModal");
-  const frame = document.getElementById("gameFrame");
-  const openBtn = document.getElementById("openGame");
-  const closeA = document.getElementById("closeGame");
-  const closeB = document.getElementById("closeGameBtn");
-
-  if (!modal || !frame || !openBtn) return;
-
-  function openGame(){
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden","false");
-    frame.src = "./game/";
-  }
-  function closeGame(){
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden","true");
-    frame.src = "";
-  }
-
-  openBtn.addEventListener("click", openGame);
-  closeA.addEventListener("click", closeGame);
-  closeB.addEventListener("click", closeGame);
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("open")) closeGame();
-  });
-})();
