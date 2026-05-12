@@ -464,49 +464,62 @@
             </div>
             <span class="tag" data-status="up">ACTIVO</span>
           </div>
-          <p>El clásico de clásicos. Rifles, AWPs y mucho tilt garantizado. Todo lo que necesitás está abajo.</p>
+          <p>El clásico de clásicos. Rifles, AWPs y mucho tilt garantizado.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <div class="icon">⚔️</div>
+            <div>
+              <h3>World of Warcraft</h3>
+              <div class="meta">Mists of Pandaria · 5.0.x</div>
+            </div>
+            <span class="tag" data-status="up">LAN</span>
+          </div>
+          <p>Realm AIRA-LAN. Para levelear tranqui entre partidas de CS.</p>
         </article>
       </div>
 
-      <!-- Setup & Registro -->
+      <!-- Setup & Registro para WoW Pandaria -->
       <div id="descargas" class="split" style="margin-top:32px;">
 
         <!-- Columna izquierda: Descarga y configuración -->
         <div>
           <div class="box">
-            <h3>📥 Descargar Cliente</h3>
-            <p>Descargá Counter-Strike 2 desde Steam o usá la versión portátil desde el link.</p>
+            <h3>⚔️ Descargar Cliente WoW Pandaria</h3>
+            <p>Descargá el cliente completo del servidor AIRA-LAN (Mists of Pandaria 5.0.x).</p>
             <div class="card-actions">
               <a class="btn primary"
                  href="https://drive.google.com/uc?export=download&id=1_sIn2YxgAxjClvlOGhF4WGJZQHlvS79a"
                  target="_blank" rel="noreferrer">
-                Descargar cliente CS2
+                Descargar cliente WoW
               </a>
             </div>
             <p class="small hint">Si Google Drive no te deja descargar, hacé clic en "Descargar" arriba a la derecha.</p>
           </div>
 
           <div class="box" style="margin-top: 24px;">
-            <h3>🛠 Configuración</h3>
-            <p class="small">Pasos rápidos para conectarte:</p>
+            <h3>🛠 Configuración del Realmlist</h3>
+            <p class="small">Una vez descargado el cliente:</p>
             <ol class="small steps-list">
-              <li>Instalá o descomprimí el cliente</li>
-              <li>Creá tu cuenta en el formulario (abajo)</li>
-              <li>Logueate y a jugar ⚔️</li>
+              <li>Entrá a la carpeta del juego</li>
+              <li>Andá a: <b>WTF/Config.wtf</b></li>
+              <li>Buscá y reemplazá la línea del realmlist:</li>
             </ol>
-            <div class="divider"></div>
             <div class="kv">
-              <div class="k">IP del servidor</div>
-              <div class="v mono">aira.local</div>
+              <div class="k">Nuevo valor</div>
+              <div class="v mono">SET realmlist "aira.hopto.org"</div>
             </div>
+            <div class="divider"></div>
+            <p class="small hint">Guardá, cerrá y ejecutá el WoW normalmente.</p>
           </div>
         </div>
 
-        <!-- Columna derecha: Registro -->
+        <!-- Columna derecha: Registro para WoW -->
         <div>
           <div class="box">
-            <h3>🔐 Crear cuenta</h3>
-            <p class="small">Completá el formulario y te creamos la cuenta en el server.</p>
+            <h3>🔐 Crear cuenta WoW</h3>
+            <p class="small">Completá el formulario para crear tu cuenta en el servidor AIRA-LAN.</p>
             <form class="form" id="registerForm">
               <div class="form-row">
                 <label>
@@ -534,7 +547,7 @@
               </div>
               <div class="form-actions">
                 <button class="btn primary" type="submit" id="registerBtn">Crear cuenta</button>
-                <span class="small hint" id="registerMsg">Completá el formulario y creamos tu cuenta.</span>
+                <span class="small hint" id="registerMsg">Completá el formulario y creamos tu cuenta en el server.</span>
               </div>
             </form>
           </div>
