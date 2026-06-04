@@ -5,14 +5,18 @@ function toggleAccordion(header) {
   const item = header.closest('.accordion-item');
   if (!item) return;
 
-  // Close all other items
-  const allItems = document.querySelectorAll('.accordion-item');
-  allItems.forEach(el => {
-    if (el !== item) el.classList.remove('open');
+  // Check if this item is currently open
+  const isOpen = item.classList.contains('open');
+
+  // Close all items
+  document.querySelectorAll('.accordion-item').forEach(el => {
+    el.classList.remove('open');
   });
 
-  // Toggle current item
-  item.classList.toggle('open');
+  // Toggle current item only if it wasn't open before
+  if (!isOpen) {
+    item.classList.add('open');
+  }
 }
 
 // Initialize accordion event listeners
@@ -20,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.accordion-header').forEach(header => {
     header.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       toggleAccordion(header);
     });
   });

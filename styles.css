@@ -817,11 +817,16 @@ h1{
 
 .accordion-item.open .accordion-body {
   display: block !important;
-  animation: slideDown 0.3s ease forwards;
+  max-height: 10000px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .accordion-item:not(.open) .accordion-body {
   display: none !important;
+  max-height: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
 .accordion-header {
