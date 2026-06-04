@@ -3,7 +3,7 @@ console.log("app.js cargó OK ✅ 🎮 REDISEÑO INTERACTIVO");
 // === SCOREBOARD ACCORDION ===
 function toggleAccordion(header) {
   const item = header.closest('.accordion-item');
-  const isOpen = item.classList.contains('open');
+  if (!item) return;
 
   // Close all other items
   const allItems = document.querySelectorAll('.accordion-item');
@@ -14,6 +14,16 @@ function toggleAccordion(header) {
   // Toggle current item
   item.classList.toggle('open');
 }
+
+// Initialize accordion event listeners
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleAccordion(header);
+    });
+  });
+});
 
 // === PARALLAX SCROLLING ===
 const parallaxLayers = document.querySelectorAll(".parallax-layer");
