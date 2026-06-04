@@ -806,6 +806,77 @@ h1{
 .split-3{ grid-template-columns:1fr 1fr 1fr; }
 @media(max-width:920px){ .split-3{ grid-template-columns:1fr; } }
 
+/* Scoreboard Accordion */
+.scoreboard-accordion {
+  border-top: 1px solid var(--line);
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--line);
+}
+
+.accordion-item.open .accordion-body {
+  display: block;
+}
+
+.accordion-item:not(.open) .accordion-body {
+  display: none;
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  cursor: pointer;
+  background: rgba(255,122,24,.04);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.accordion-header:hover {
+  background: rgba(255,122,24,.08);
+}
+
+.accordion-title {
+  font-family: 'Rajdhani', system-ui;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.accordion-toggle {
+  display: inline-flex;
+  align-items: center;
+  color: var(--orange2);
+  font-size: 12px;
+  transition: transform 0.3s ease;
+  font-weight: 700;
+}
+
+.accordion-item.open .accordion-toggle {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  padding: 0;
+  overflow: hidden;
+  animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 10000px;
+  }
+}
+
 /* Scoreboard */
 .scoreboard-wrap{
   padding:0;

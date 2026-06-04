@@ -1,5 +1,20 @@
 console.log("app.js cargó OK ✅ 🎮 REDISEÑO INTERACTIVO");
 
+// === SCOREBOARD ACCORDION ===
+function toggleAccordion(header) {
+  const item = header.closest('.accordion-item');
+  const isOpen = item.classList.contains('open');
+
+  // Close all other items
+  const allItems = document.querySelectorAll('.accordion-item');
+  allItems.forEach(el => {
+    if (el !== item) el.classList.remove('open');
+  });
+
+  // Toggle current item
+  item.classList.toggle('open');
+}
+
 // === PARALLAX SCROLLING ===
 const parallaxLayers = document.querySelectorAll(".parallax-layer");
 function initParallax() {
