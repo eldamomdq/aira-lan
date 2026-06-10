@@ -6,6 +6,12 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["game/server.js"],
       "port": 8787
+    },
+    {
+      "name": "AIRA-LAN Static Site",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "serve", "-l", "8765", "."],
+      "port": 8765
     }
   ]
 }

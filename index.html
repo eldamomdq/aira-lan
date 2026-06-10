@@ -39,7 +39,7 @@
 
       <div class="nav-links" id="navLinks">
         <a href="#home">Home</a>
-        <a href="#proxima">Próxima LAN</a>
+        <a href="#proxima">Última LAN</a>
         <a href="#jugadores">Roster</a>
         <a href="#juegos">Juegos &amp; Descargas</a>
         <a href="#historial">Historial</a>
@@ -50,87 +50,96 @@
 
   <!-- Hero -->
   <main id="home" class="hero" data-animate>
-    <div class="container" style="max-width: 900px; margin: 0 auto;">
-      <div style="text-align: center;">
+    <div class="container hero-center">
 
-        <div class="badge">
-          <span class="dot"></span>
-          LAN PARTY · MAR DEL PLATA · EST. 2024
-        </div>
+      <div class="badge">
+        <span class="dot pulse"></span>
+        LAN PARTY · MAR DEL PLATA · EST. 2024
+      </div>
 
-        <div class="hero-active-badge">
-          <p class="badge-label">✅ FINALIZADO</p>
-        </div>
+      <h1 class="glitch" data-text="AIRA-LAN">
+        <span class="accent">AIRA-LAN</span>
+      </h1>
 
-        <h1 style="margin-bottom: 16px;">
-          <span class="accent">AIRA-LAN</span>
-        </h1>
+      <p class="lead hero-lead">
+        Una LAN entre amigos, sin drama. Counter-Strike 2.<br/>
+        Entrás, jugás, te cagás de risa. Listo&nbsp;😄
+      </p>
 
-        <p class="lead" style="margin-bottom: 40px; text-align: center;">
-          Una LAN entre amigos, sin drama. Counter-Strike 2.<br/>
-          Entrás, jugás, te cagás de risa. Listo&nbsp;😄
-        </p>
-
-
-        <!-- Top 5 Jugadores -->
-        <div style="margin-bottom: 48px;">
-          <div style="font-size: 0.85em; text-transform: uppercase; letter-spacing: 2px; color: rgba(233,238,246,0.6); margin-bottom: 20px;">Top Campeones Generales</div>
-          <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-            <div style="text-align: center;">
-              <div style="font-size: 1.8em; margin-bottom: 4px;">🥇</div>
-              <div style="font-weight: 600; font-size: 0.95em;">Chispita</div>
-              <div style="font-size: 0.75em; opacity: 0.6;">758 pts</div>
-            </div>
-            <div style="text-align: center;">
-              <div style="font-size: 1.8em; margin-bottom: 4px;">🥈</div>
-              <div style="font-weight: 600; font-size: 0.95em;">GROOT</div>
-              <div style="font-size: 0.75em; opacity: 0.6;">582 pts</div>
-            </div>
-            <div style="text-align: center;">
-              <div style="font-size: 1.8em; margin-bottom: 4px;">🥉</div>
-              <div style="font-weight: 600; font-size: 0.95em;">KungFu</div>
-              <div style="font-size: 0.75em; opacity: 0.6;">552 pts</div>
-            </div>
-            <div style="text-align: center;">
-              <div style="font-size: 1.8em; margin-bottom: 4px;">4</div>
-              <div style="font-weight: 600; font-size: 0.95em;">Moby</div>
-              <div style="font-size: 0.75em; opacity: 0.6;">515 pts</div>
-            </div>
-            <div style="text-align: center;">
-              <div style="font-size: 1.8em; margin-bottom: 4px;">5</div>
-              <div style="font-weight: 600; font-size: 0.95em;">Emma.bf</div>
-              <div style="font-size: 0.75em; opacity: 0.6;">480 pts</div>
-            </div>
+      <!-- Podio Hall of Fame -->
+      <div class="hero-podium-wrap">
+        <div class="podium-label">// HALL OF FAME · RANKING GENERAL</div>
+        <div class="hero-podium">
+          <div class="podium-card silver">
+            <div class="podium-medal">🥈</div>
+            <div class="podium-name">GROOT</div>
+            <div class="podium-pts">582 pts</div>
+            <div class="podium-base">#2</div>
+          </div>
+          <div class="podium-card gold">
+            <div class="podium-crown">👑</div>
+            <div class="podium-medal">🥇</div>
+            <div class="podium-name">Chispita</div>
+            <div class="podium-pts">758 pts</div>
+            <div class="podium-tag">BICAMPEÓN</div>
+            <div class="podium-base">#1</div>
+          </div>
+          <div class="podium-card bronze">
+            <div class="podium-medal">🥉</div>
+            <div class="podium-name">KungFu</div>
+            <div class="podium-pts">552 pts</div>
+            <div class="podium-base">#3</div>
           </div>
         </div>
-
-        <!-- Separador -->
-        <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(255,122,24,0.3), transparent); margin-bottom: 40px;"></div>
-
-        <!-- Stats -->
-        <div style="margin-bottom: 48px;">
-          <div style="font-size: 1.4em; font-weight: 700; color: var(--orange2); margin-bottom: 8px;">19</div>
-          <div style="font-size: 0.9em; opacity: 0.8;">Jugadores Confirmados</div>
-          <p style="font-size: 0.95em; opacity: 0.7; margin-top: 16px;">Una noche de caos, risa y competencia</p>
+        <div class="podium-runners">
+          <span class="runner-chip">4 · Moby — 515 pts</span>
+          <span class="runner-chip">5 · Emma.bf — 480 pts</span>
         </div>
-
-        <!-- Botones -->
-        <div class="hero-actions" style="justify-content: center;">
-          <a class="btn primary" href="#jugadores">Ver Roster Completo</a>
-          <a class="btn ghost" href="#conexion">Únete al Discord</a>
-        </div>
-
       </div>
+
+      <!-- Stats de la comunidad -->
+      <div class="stat-strip">
+        <div class="stat-chip">
+          <span class="stat-chip-num">2</span>
+          <span class="stat-chip-label">LANs jugadas</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-chip-num">20</span>
+          <span class="stat-chip-label">Jugadores</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-chip-num">6.063</span>
+          <span class="stat-chip-label">Puntos repartidos</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-chip-num">20hs</span>
+          <span class="stat-chip-label">De puro fragueo</span>
+        </div>
+      </div>
+
+      <!-- Teaser próxima LAN -->
+      <div class="next-lan-teaser">
+        <span class="dot pulse"></span>
+        <span>LAN #02 ✅ FINALIZADA · LAN #03 EN PREPARACIÓN 👀</span>
+      </div>
+
+      <!-- Botones -->
+      <div class="hero-actions hero-actions-center">
+        <a class="btn primary" href="#historial">Ver Scoreboard</a>
+        <a class="btn ghost" href="#jugadores">El Roster</a>
+        <a class="btn ghost" href="#conexion">Únete al Discord</a>
+      </div>
+
     </div>
   </main>
 
-  <!-- Próxima LAN -->
+  <!-- Última LAN -->
   <section id="proxima" class="section" data-animate>
     <div class="container">
       <div class="section-head">
-        <div class="section-tag">EVENTO FINALIZADO</div>
-        <h2>LAN #02 <span class="accent">Finalizada</span></h2>
-        <p>LAN #02 Finalizada. Nuevos puntos cargados</p>
+        <div class="section-tag">ÚLTIMA BATALLA</div>
+        <h2>LAN #02 <span class="accent">· Edición Otoño</span></h2>
+        <p>Se jugó el 30 de Mayo. Hubo headshots, hubo tilt, y Chispita volvió a llevarse todo.</p>
       </div>
 
       <div class="event-grid">
@@ -161,14 +170,17 @@
         </div>
 
         <div class="event-side">
-          <div class="box">
-            <div class="event-count-big">
-              <span class="count-num">19</span>
-              <span class="count-label">jugadores<br/>confirmados</span>
+          <div class="box recap-box">
+            <div class="recap-title">🏆 Campeón LAN #02</div>
+            <div class="recap-champ">Chispita</div>
+            <div class="recap-pts">400 pts · BICAMPEÓN 👑</div>
+            <div class="divider"></div>
+            <div class="recap-podium">
+              <div class="recap-row">🥈 GROOT — 301 pts</div>
+              <div class="recap-row">🥉 Julián Martinez — 297 pts</div>
             </div>
             <div class="divider"></div>
-            <p class="small hint">12 veteranos + 7 caras nuevas. Listo para el caos.</p>
-            <a class="btn small primary" href="#jugadores">Ver el roster</a>
+            <a class="btn small primary" href="#historial">Ver tabla completa</a>
           </div>
         </div>
       </div>
@@ -180,7 +192,7 @@
   <div class="container">
     <div class="section-head">
       <div class="section-tag">EL ROSTER</div>
-      <h2>Los <span class="accent">19</span> confirmados</h2>
+      <h2>Los <span class="accent">20</span> de la comunidad</h2>
       <p>Cada uno con su historia, su reputación, y sus pecados.</p>
     </div>
 
@@ -207,7 +219,7 @@
           <span>CH</span>
         </div>
         <div class="player-info">
-          <div class="player-nick">🏆 Chispita 🥇</div>
+          <div class="player-nick">Chispita <span class="champion-badge">👑 2× CAMPEÓN</span></div>
           <div class="player-tag">Provocador élite</div>
           <div class="player-lore">Provocador como pocos. El mejor de los nuestros. Paradoja viviente.</div>
           <p class="card-stats">Score: 758</p>
@@ -329,7 +341,7 @@
       <!-- 11. ULICEZBOT - 148 puntos -->
       <div class="player-card" data-score="252" data-lans="2">
         <div class="player-avatar" data-initials="UB">
-          <img src="./Assets/Players/jdd-aira.jpeg" alt="McLanee" loading="lazy">
+          <img src="./Assets/Players/jdd-aira.jpeg" alt="Ulicezbot" loading="lazy">
           <span>UB</span>
         </div>
         <div class="player-info">
@@ -356,9 +368,9 @@
 
       <!-- 13-19. ROOKIES NUEVAS -->
       <!-- T1N -->
-      <div class="player-card" data-score="295" data-lans="1">
+      <div class="player-card rookie" data-score="295" data-lans="1">
         <div class="player-avatar" data-initials="T1">
-          <img src="./Assets/Players/t1n-aira.jpeg" alt="Simo" loading="lazy">
+          <img src="./Assets/Players/t1n-aira.jpeg" alt="T1n" loading="lazy">
           <span>T1</span>
         </div>
         <div class="player-info">
@@ -370,9 +382,9 @@
       </div>
 
       <!-- LUCHO -->
-      <div class="player-card" data-score="247" data-lans="1">
+      <div class="player-card rookie" data-score="247" data-lans="1">
         <div class="player-avatar" data-initials="LC">
-          <img src="./Assets/Players/lucho-aira.jpeg" alt="Simo" loading="lazy">
+          <img src="./Assets/Players/lucho-aira.jpeg" alt="Lucho" loading="lazy">
           <span>LC</span>
         </div>
         <div class="player-info">
@@ -384,9 +396,9 @@
       </div>
 
       <!-- RONI -->
-      <div class="player-card" data-score="49" data-lans="1">
+      <div class="player-card rookie" data-score="49" data-lans="1">
         <div class="player-avatar" data-initials="RN">
-          <img src="./Assets/Players/Roni-aira.jpg" alt="Simo" loading="lazy">
+          <img src="./Assets/Players/Roni-aira.jpg" alt="Roni" loading="lazy">
           <span>RN</span>
         </div>
         <div class="player-info">
@@ -398,7 +410,7 @@
       </div>
 
       <!-- EMPANADA DE POLENTA -->
-      <div class="player-card" data-score="163" data-lans="1">
+      <div class="player-card rookie" data-score="163" data-lans="1">
         <div class="player-avatar" data-initials="EP">
           <span>EP</span>
         </div>
@@ -411,7 +423,7 @@
       </div>
 
       <!-- PIGUYIB BRIAN -->
-      <div class="player-card" data-score="0" data-lans="0">
+      <div class="player-card rookie" data-score="0" data-lans="0">
         <div class="player-avatar" data-initials="PB">
           <span>PB</span>
         </div>
@@ -424,9 +436,9 @@
       </div>
 
       <!-- JULIÁN MARTINEZ -->
-      <div class="player-card" data-score="297" data-lans="1">
+      <div class="player-card rookie" data-score="297" data-lans="1">
         <div class="player-avatar" data-initials="JM">
-          <img src="./Assets/Players/Julian-Martinez-aira.jpeg" alt="Simo" loading="lazy">
+          <img src="./Assets/Players/Julian-Martinez-aira.jpeg" alt="Julián Martinez" loading="lazy">
           <span>JM</span>
         </div>
         <div class="player-info">
@@ -438,7 +450,7 @@
       </div>
 
       <!-- PAPURRI -->
-      <div class="player-card" data-score="0" data-lans="0">
+      <div class="player-card rookie" data-score="0" data-lans="0">
         <div class="player-avatar" data-initials="PP">
           <span>PP</span>
         </div>
@@ -451,7 +463,7 @@
       </div>
 
       <!-- VALEN -->
-      <div class="player-card" data-score="95" data-lans="2">
+      <div class="player-card rookie" data-score="95" data-lans="2">
         <div class="player-avatar" data-initials="VA">
           <span>VA</span>
         </div>
@@ -1184,7 +1196,7 @@
 
       <div class="footer-links">
         <a href="#home">Home</a>
-        <a href="#proxima">Próxima LAN</a>
+        <a href="#proxima">Última LAN</a>
         <a href="#jugadores">Roster</a>
         <a href="#juegos">Juegos &amp; Descargas</a>
         <a href="#historial">Historial</a>
@@ -1193,7 +1205,7 @@
 
       <div class="footer-right small">
         <div>© <span id="year"></span> AIRA-LAN</div>
-        <div class="mono">v2.0</div>
+        <div class="mono">v3.0</div>
       </div>
     </div>
   </footer>

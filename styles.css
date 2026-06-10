@@ -1041,3 +1041,300 @@ h1{
   display:block;
   background:#000;
 }
+
+/* ============================================
+   v3.0 — HERO GAMER REDESIGN
+   ============================================ */
+
+.hero-center{
+  max-width:900px;
+  margin:0 auto;
+  text-align:center;
+}
+.hero-lead{
+  margin:0 auto 36px;
+  text-align:center;
+}
+.hero-actions-center{
+  justify-content:center;
+  margin-bottom:0;
+}
+
+/* Glitch title */
+.glitch{
+  position:relative;
+  margin:20px 0 14px;
+}
+.glitch::before,
+.glitch::after{
+  content:attr(data-text);
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  font-weight:800;
+  letter-spacing:1px;
+  pointer-events:none;
+  clip-path:inset(0 0 100% 0);
+}
+.glitch::before{
+  color:#64c8ff;
+  transform:translateX(-3px);
+  text-shadow:0 0 20px rgba(100,200,255,.5);
+  animation:glitch-slice-a 6s steps(1) infinite;
+}
+.glitch::after{
+  color:var(--orange);
+  transform:translateX(3px);
+  text-shadow:0 0 20px rgba(255,122,24,.5);
+  animation:glitch-slice-b 6s steps(1) infinite;
+}
+@keyframes glitch-slice-a{
+  0%, 91%, 100%{ clip-path:inset(0 0 100% 0); }
+  92%{ clip-path:inset(10% 0 60% 0); }
+  94%{ clip-path:inset(60% 0 20% 0); }
+  96%{ clip-path:inset(30% 0 50% 0); }
+  98%{ clip-path:inset(80% 0 5% 0); }
+}
+@keyframes glitch-slice-b{
+  0%, 90%, 100%{ clip-path:inset(0 0 100% 0); }
+  91%{ clip-path:inset(70% 0 10% 0); }
+  93%{ clip-path:inset(20% 0 65% 0); }
+  95%{ clip-path:inset(50% 0 30% 0); }
+  97%{ clip-path:inset(5% 0 85% 0); }
+}
+
+/* Podio Hall of Fame */
+.hero-podium-wrap{
+  margin:0 auto 36px;
+}
+.podium-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  letter-spacing:2.5px;
+  color:var(--muted);
+  margin-bottom:20px;
+  text-transform:uppercase;
+}
+.hero-podium{
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  gap:10px;
+}
+.podium-card{
+  width:160px;
+  padding:18px 12px 0;
+  border-radius:14px 14px 0 0;
+  border:1px solid var(--line);
+  border-bottom:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
+  position:relative;
+  transition:.3s var(--ease);
+}
+.podium-card:hover{
+  transform:translateY(-6px);
+}
+.podium-medal{ font-size:32px; line-height:1; }
+.podium-name{
+  font-family:'Rajdhani',system-ui;
+  font-weight:700;
+  font-size:18px;
+  margin-top:8px;
+  letter-spacing:.3px;
+}
+.podium-pts{
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:3px;
+}
+.podium-tag{
+  display:inline-block;
+  margin-top:8px;
+  font-size:9px;
+  font-family:'Share Tech Mono',monospace;
+  color:#ffd700;
+  border:1px solid rgba(255,215,0,.35);
+  background:rgba(255,215,0,.08);
+  padding:2px 8px;
+  border-radius:4px;
+  letter-spacing:1px;
+}
+.podium-base{
+  margin-top:14px;
+  padding:8px 0;
+  font-family:'Share Tech Mono',monospace;
+  font-size:13px;
+  color:var(--muted);
+  border-top:1px solid var(--line);
+  background:rgba(0,0,0,.2);
+  border-radius:0;
+}
+.podium-card.gold{
+  border-color:rgba(255,215,0,.45);
+  background:linear-gradient(180deg, rgba(255,215,0,.12), rgba(255,215,0,.02));
+  box-shadow:0 0 30px rgba(255,215,0,.15);
+  z-index:2;
+}
+.podium-card.gold .podium-name{ color:#ffd700; text-shadow:0 0 20px rgba(255,215,0,.4); }
+.podium-card.gold .podium-base{
+  padding:18px 0;
+  color:#ffd700;
+  border-top-color:rgba(255,215,0,.25);
+}
+.podium-card.silver{
+  border-color:rgba(192,192,192,.3);
+  background:linear-gradient(180deg, rgba(192,192,192,.08), rgba(192,192,192,.01));
+}
+.podium-card.silver .podium-base{ padding:12px 0; }
+.podium-card.bronze{
+  border-color:rgba(205,127,50,.3);
+  background:linear-gradient(180deg, rgba(205,127,50,.08), rgba(205,127,50,.01));
+}
+.podium-card.bronze .podium-base{ padding:6px 0; }
+.podium-crown{
+  position:absolute;
+  top:-26px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:24px;
+  animation:crownFloat 2.5s ease-in-out infinite;
+  filter:drop-shadow(0 0 10px rgba(255,215,0,.5));
+}
+@keyframes crownFloat{
+  0%, 100%{ transform:translateX(-50%) translateY(0); }
+  50%{ transform:translateX(-50%) translateY(-5px); }
+}
+.podium-runners{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:14px;
+  flex-wrap:wrap;
+}
+.runner-chip{
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  color:var(--muted);
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.02);
+  padding:5px 12px;
+  border-radius:6px;
+  letter-spacing:.3px;
+}
+
+/* Stats de la comunidad */
+.stat-strip{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:32px;
+}
+.stat-chip{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  min-width:120px;
+  padding:12px 18px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(255,255,255,.03);
+  transition:.25s var(--ease);
+}
+.stat-chip:hover{
+  border-color:rgba(255,122,24,.35);
+  background:rgba(255,122,24,.05);
+  transform:translateY(-2px);
+}
+.stat-chip-num{
+  font-family:'Rajdhani',system-ui;
+  font-size:26px;
+  font-weight:700;
+  color:var(--orange2);
+  line-height:1.1;
+}
+.stat-chip-label{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--muted);
+}
+
+/* Teaser próxima LAN */
+.next-lan-teaser{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 18px;
+  border-radius:8px;
+  margin-bottom:28px;
+  border:1px solid rgba(100,200,255,.3);
+  background:rgba(100,200,255,.06);
+  font-family:'Share Tech Mono',monospace;
+  font-size:12px;
+  color:rgba(100,200,255,.9);
+  letter-spacing:.5px;
+  box-shadow:0 0 20px rgba(100,200,255,.08);
+}
+
+/* Badge de bicampeón en roster */
+.champion-badge{
+  font-size:9px;
+  font-family:'Share Tech Mono',monospace;
+  color:#ffd700;
+  border:1px solid rgba(255,215,0,.4);
+  background:rgba(255,215,0,.1);
+  padding:2px 6px;
+  border-radius:4px;
+  letter-spacing:1px;
+  text-shadow:0 0 10px rgba(255,215,0,.3);
+}
+
+/* Recap LAN #02 */
+.recap-box{ text-align:left; }
+.recap-title{
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  letter-spacing:1.5px;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+.recap-champ{
+  font-family:'Rajdhani',system-ui;
+  font-size:34px;
+  font-weight:800;
+  color:#ffd700;
+  text-shadow:0 0 25px rgba(255,215,0,.35);
+  line-height:1.1;
+  margin-top:6px;
+}
+.recap-pts{
+  font-family:'Share Tech Mono',monospace;
+  font-size:12px;
+  color:var(--orange2);
+  margin-top:4px;
+  letter-spacing:.5px;
+}
+.recap-podium{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.recap-row{
+  font-family:'Share Tech Mono',monospace;
+  font-size:12px;
+  color:rgba(233,238,246,.7);
+  letter-spacing:.3px;
+}
+
+/* Responsive hero v3 */
+@media(max-width:560px){
+  .podium-card{ width:31%; min-width:0; padding:14px 8px 0; }
+  .podium-name{ font-size:14px; }
+  .podium-medal{ font-size:24px; }
+  .podium-tag{ font-size:8px; padding:2px 5px; }
+  .stat-chip{ min-width:calc(50% - 10px); }
+  .glitch::before, .glitch::after{ display:none; }
+}
