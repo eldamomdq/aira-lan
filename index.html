@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>AIRA-LAN | CS2 · LAN Party</title>
-  <meta name="description" content="AIRA-LAN - LAN Party entre amigos. Counter-Strike 2, descargas y todo lo que necesitás." />
+  <meta name="description" content="AIRA-LAN - LAN Party entre amigos. Próxima LAN #03 Edición Invierno: Sáb 19/09 · 19hs. Counter-Strike 2, descargas y todo lo que necesitás." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Share+Tech+Mono&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css" />
   <link rel="icon" href="./Assets/favicon.ico" type="image/x-icon">
 </head>
@@ -39,7 +39,7 @@
 
       <div class="nav-links" id="navLinks">
         <a href="#home">Home</a>
-        <a href="#proxima">Última LAN</a>
+        <a href="#proxima">Próxima LAN</a>
         <a href="#jugadores">Roster</a>
         <a href="#juegos">Juegos &amp; Descargas</a>
         <a href="#historial">Historial</a>
@@ -118,32 +118,61 @@
       </div>
 
       <!-- Teaser próxima LAN -->
-      <div class="next-lan-teaser">
+      <a class="next-lan-teaser lan3-live" href="#proxima">
         <span class="dot pulse"></span>
-        <span>LAN #02 ✅ FINALIZADA · LAN #03 EN PREPARACIÓN 👀</span>
-      </div>
+        <span>LAN #03 · EDICIÓN INVIERNO · <b>SÁB 19/09 — 19:00HS</b> · CONFIRMADA ✅</span>
+      </a>
 
       <!-- Botones -->
       <div class="hero-actions hero-actions-center">
-        <a class="btn primary" href="#historial">Ver Scoreboard</a>
-        <a class="btn ghost" href="#jugadores">El Roster</a>
+        <a class="btn primary" href="#proxima">Próxima LAN</a>
+        <a class="btn ghost" href="#historial">Ver Scoreboard</a>
         <a class="btn ghost" href="#conexion">Únete al Discord</a>
       </div>
 
     </div>
   </main>
 
-  <!-- Última LAN -->
+  <!-- Próxima LAN -->
   <section id="proxima" class="section" data-animate>
     <div class="container">
       <div class="section-head">
-        <div class="section-tag">ÚLTIMA BATALLA</div>
-        <h2>LAN #02 <span class="accent">· Edición Otoño</span></h2>
-        <p>Se jugó el 30 de Mayo. Hubo headshots, hubo tilt, y Chispita volvió a llevarse todo.</p>
+        <div class="section-tag">// PRÓXIMA BATALLA</div>
+        <h2>LAN #03 <span class="accent">· Edición Invierno</span></h2>
+        <p>Sábado 19 de Septiembre · 19:00hs · Misma dirección que la última. Chispita defiende la corona: ¿alguien se anima a bajarlo?</p>
+      </div>
+
+      <!-- Countdown HUD -->
+      <div class="countdown-hud" role="timer" aria-label="Cuenta regresiva para la LAN #03">
+        <div class="cd-label-hud">// T-MINUS PARA EL FRAGUEO</div>
+        <div class="countdown-timer hud-timer">
+          <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-lbl">Días</span></div>
+          <span class="cd-sep">:</span>
+          <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-lbl">Horas</span></div>
+          <span class="cd-sep">:</span>
+          <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-lbl">Min</span></div>
+          <span class="cd-sep">:</span>
+          <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-lbl">Seg</span></div>
+        </div>
       </div>
 
       <div class="event-grid">
-        <div class="event-main box">
+        <div class="event-main box hud-corners">
+          <div class="event-briefing">
+            <div class="brief-item">
+              <span class="brief-k">📅 FECHA</span>
+              <span class="brief-v">Sábado 19 de Septiembre</span>
+            </div>
+            <div class="brief-item">
+              <span class="brief-k">🕖 HORA</span>
+              <span class="brief-v">19:00hs</span>
+            </div>
+            <div class="brief-item">
+              <span class="brief-k">📍 LUGAR</span>
+              <span class="brief-v">Misma dirección que la LAN #02</span>
+            </div>
+          </div>
+          <div class="divider"></div>
           <div class="event-games">
             <div class="event-game">
               <div class="game-icon">🎯</div>
@@ -170,17 +199,27 @@
         </div>
 
         <div class="event-side">
-          <div class="box recap-box">
-            <div class="recap-title">🏆 Campeón LAN #02</div>
-            <div class="recap-champ">Chispita</div>
-            <div class="recap-pts">400 pts · BICAMPEÓN 👑</div>
-            <div class="divider"></div>
-            <div class="recap-podium">
-              <div class="recap-row">🥈 GROOT — 301 pts</div>
-              <div class="recap-row">🥉 Julián Martinez — 297 pts</div>
+          <div class="box recap-box hud-corners">
+            <div class="recap-title">✅ CONFIRMADOS · 11 PLAYERS</div>
+            <div class="confirmed-grid">
+              <span class="confirm-chip"><span class="cnum">01</span> Chispita 👑</span>
+              <span class="confirm-chip"><span class="cnum">02</span> KungFu</span>
+              <span class="confirm-chip"><span class="cnum">03</span> Moby</span>
+              <span class="confirm-chip"><span class="cnum">04</span> Emma.bf</span>
+              <span class="confirm-chip"><span class="cnum">05</span> T1n</span>
+              <span class="confirm-chip"><span class="cnum">06</span> Juani (McLane)</span>
+              <span class="confirm-chip"><span class="cnum">07</span> Juli</span>
+              <span class="confirm-chip"><span class="cnum">08</span> Toyo</span>
+              <span class="confirm-chip"><span class="cnum">09</span> Damo</span>
+              <span class="confirm-chip"><span class="cnum">10</span> Simo</span>
+              <span class="confirm-chip"><span class="cnum">11</span> Lucho</span>
             </div>
             <div class="divider"></div>
-            <a class="btn small primary" href="#historial">Ver tabla completa</a>
+            <div class="recap-title">🏆 ÚLTIMO CAMPEÓN</div>
+            <div class="recap-champ">Chispita</div>
+            <div class="recap-pts">Defiende el título · BICAMPEÓN 👑</div>
+            <div class="divider"></div>
+            <a class="btn small primary" href="#historial">Ver scoreboard</a>
           </div>
         </div>
       </div>
@@ -666,6 +705,7 @@
       <div class="timeline-item">
         <div class="tl-marker">
           <div class="tl-dot"></div>
+          <div class="tl-line"></div>
         </div>
         <div class="tl-content box">
           <div class="tl-header">
@@ -682,6 +722,29 @@
             <span class="tl-game">⚔️ WoW Pandaria</span>
           </div>
           <div class="tl-players muted-text">Se jugó, se gritó, y quedaron nuevos puntos en el scoreboard.</div>
+        </div>
+      </div>
+
+      <!-- LAN #03 (PRÓXIMA) -->
+      <div class="timeline-item">
+        <div class="tl-marker">
+          <div class="tl-dot next"></div>
+        </div>
+        <div class="tl-content box">
+          <div class="tl-header">
+            <span class="tl-num">#03</span>
+            <div>
+              <div class="tl-title">Edición Invierno</div>
+              <div class="tl-date">Sáb 19 de Septiembre 2026 · 19:00hs</div>
+            </div>
+            <span class="tag" data-status="next">PRÓXIMA</span>
+          </div>
+          <div class="tl-games">
+            <span class="tl-game">🎯 CS2</span>
+            <span class="tl-game">💥 CoD4 MW</span>
+            <span class="tl-game">⚔️ WoW Pandaria</span>
+          </div>
+          <div class="tl-players">11 confirmados · Chispita defiende el título</div>
         </div>
       </div>
 
@@ -1173,7 +1236,7 @@
 
       <div class="scoreboard-footer">
         <span class="log-prompt">$</span>
-        <span class="small hint">LAN #02 finalizada · Scoreboard actualizado</span>
+        <span class="small hint">LAN #02 finalizada · Próxima carga de puntos: LAN #03 · 19/09</span>
       </div>
     </div>
 
@@ -1196,7 +1259,7 @@
 
       <div class="footer-links">
         <a href="#home">Home</a>
-        <a href="#proxima">Última LAN</a>
+        <a href="#proxima">Próxima LAN</a>
         <a href="#jugadores">Roster</a>
         <a href="#juegos">Juegos &amp; Descargas</a>
         <a href="#historial">Historial</a>
@@ -1205,7 +1268,7 @@
 
       <div class="footer-right small">
         <div>© <span id="year"></span> AIRA-LAN</div>
-        <div class="mono">v3.0</div>
+        <div class="mono">v3.1</div>
       </div>
     </div>
   </footer>
