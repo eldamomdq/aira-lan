@@ -172,45 +172,6 @@ document.querySelectorAll(".nav-links a").forEach((a) => {
   });
 });
 
-// Countdown — Próxima LAN #03: Sábado 19 Sep 2026, 19:00hs Argentina (UTC-3)
-function initCountdown() {
-  const target = new Date("2026-09-19T22:00:00Z");
-
-  function tick() {
-    const now = new Date();
-    const diff = target - now;
-
-    if (diff <= 0) {
-      document.getElementById("cd-d").textContent = "00";
-      document.getElementById("cd-h").textContent = "00";
-      document.getElementById("cd-m").textContent = "00";
-      document.getElementById("cd-s").textContent = "00";
-      return;
-    }
-
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff % 86400000) / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-
-    const pad = (n) => String(n).padStart(2, "0");
-
-    const elD = document.getElementById("cd-d");
-    const elH = document.getElementById("cd-h");
-    const elM = document.getElementById("cd-m");
-    const elS = document.getElementById("cd-s");
-
-    if (elD) elD.textContent = pad(d);
-    if (elH) elH.textContent = pad(h);
-    if (elM) elM.textContent = pad(m);
-    if (elS) elS.textContent = pad(s);
-  }
-
-  tick();
-  setInterval(tick, 1000);
-}
-initCountdown();
-
 // Estado del servidor
 const serverStatus = document.getElementById("serverStatus");
 const statOnline = document.getElementById("statOnline");
